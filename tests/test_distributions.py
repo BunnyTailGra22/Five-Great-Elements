@@ -137,3 +137,24 @@ def test_heatmap_edges_span_the_observed_range():
     assert heat["edges"][0] == pytest.approx(heat["min"], abs=0.01)
     assert heat["edges"][-1] == pytest.approx(heat["max"], abs=0.01)
     assert heat["agg"] == "mean"
+
+
+def test_findings_are_computed_for_every_measure():
+    payload = build_payload(make_config(2026), STATION, make_daily())
+
+    for measure in payload["measures"]:
+        findings = measure["findings"]
+        assert 1 <= len(findings) <= 4
+        for item in findings:
+            assert item["lead"] and item["text"]
+            assert "{" not in item["text"]
+        # Every measure closes on its record day.
+        assert findings[-1]["lead"] == "Record day"
+
+
+def test_cold_month_list_does_not_read_as_a_range():
+    from fge_climate.distributions import _month_list
+
+    # Winter wraps the year end, so Jan-Dec would be nonsense.
+    assert _month_list([1, 2, 3, 12]) == "Jan, Feb, Mar and Dec"
+    assert _month_list([7]) == "Jul"

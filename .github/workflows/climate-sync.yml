@@ -75,7 +75,7 @@ jobs:
         env:
           PYTHONPATH: src
 
-      - name: Regenerate the web pages
+      - name: Regenerate the web pages and the Pages site
         run: python -m fge_climate.cli web
         env:
           PYTHONPATH: src
@@ -84,7 +84,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data reports web
+          git add data reports web docs
           if git diff --staged --quiet; then
             echo "No changes to commit."
             exit 0

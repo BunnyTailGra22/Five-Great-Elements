@@ -12,6 +12,7 @@ gate in both light and dark mode.
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -85,6 +86,81 @@ KNOWN_BREAKS: dict[str, list[dict]] = {
         {"year": 2007, "label": "confirmed break", "confirmed": True},
     ],
 }
+
+
+PROSE_UNIT = {"hour": "h"}
+
+
+def _measure_findings(measure: dict, entry: dict, window: tuple[int, int]) -> list[dict]:
+    """Compact, fully computed findings for one measure on the overview page.
+
+    Derived from the payload that was just built, so the wording tracks the data
+    rather than being written once and going stale.
+    """
+    unit = PROSE_UNIT.get(measure["unit"], measure["unit"])
+    clim = [c for c in entry["climatology"] if c.get("mean") is not None]
+    if not clim:
+        return []
+
+    high = max(clim, key=lambda c: c["mean"])
+    low = min(clim, key=lambda c: c["mean"])
+    decimals = 0 if measure["agg"] == "sum" else 1
+    blocks = entry["blocks"]
+    out: list[dict] = []
+
+    shape = (
+        f"{high['label']} is the peak month at {high['mean']:,.{decimals}f} {unit} and "
+        f"{low['label']} the trough at {low['mean']:,.{decimals}f}"
+    )
+    if measure["agg"] == "sum":
+        ratio = high["mean"] / low["mean"] if low["mean"] else 0
+        shape += f" — a {ratio:.1f}x difference across the year."
+    else:
+        shape += f", a spread of {high['mean'] - low['mean']:,.1f} {unit}."
+    out.append({"lead": "Shape of the year", "text": shape})
+
+    # How much record actually exists, stated as gaps rather than a raw span.
+    span = f"{blocks[0][0]}–{blocks[-1][1]}" if blocks else "none"
+    fragments = len(blocks)
+    record = f"{entry['record_years']} usable years within {span}"
+    if fragments > 1:
+        record += f", broken into {fragments} runs by years below the coverage gate"
+    else:
+        record += ", unbroken"
+    out.append({"lead": "How much record", "text": record + "."})
+
+    trend = entry.get("segment_trend")
+    if entry.get("breaks"):
+        years = ", ".join(str(b["year"]) for b in entry["breaks"])
+        out.append({
+            "lead": "Treat trends with care",
+            "text": f"Step changes at {years} come from the station, not the weather; "
+                    f"only the segment after the last one is comparable.",
+        })
+    elif trend and trend.get("slope_per_decade") is not None:
+        p_value = trend.get("p_value")
+        verdict = (
+            "significant" if p_value is not None and p_value < 0.05 else "not significant"
+        )
+        caution = " — far too short to read as climate" if trend["n"] < 12 else ""
+        out.append({
+            "lead": "Trend so far",
+            "text": f"{trend['slope_per_decade']:+,.2f} {unit}/decade over "
+                    f"{trend['start']}–{trend['end']} ({trend['n']} years, {verdict}){caution}.",
+        })
+    else:
+        out.append({
+            "lead": "Trend so far",
+            "text": "The record is too short or too broken for a trend to mean anything.",
+        })
+
+    extremes = entry.get("extremes") or {}
+    if extremes.get("daily_max") is not None:
+        out.append({
+            "lead": f"Extreme in {window[0]}–{window[1]}",
+            "text": f"{extremes['daily_max']:g} {unit} on {extremes['daily_max_date']}.",
+        })
+    return out[:4]
 
 
 def _gate(measure: dict) -> float:
@@ -237,6 +313,7 @@ def build_payload(config: Config, station: Station, daily: pd.DataFrame) -> dict
                 "record_years": len(usable_years),
             }
         )
+        measures[-1]["findings"] = _measure_findings(measure, measures[-1], window)
 
     return {
         "generated": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
@@ -265,7 +342,33 @@ def build_payload(config: Config, station: Station, daily: pd.DataFrame) -> dict
     }
 
 
-def write_page(payload: dict, out_path: Path, template_path: Path | None = None) -> Path:
+TITLE_PATTERN = re.compile(r"<title>(.*?)</title>\s*", re.S)
+
+# Standalone documents are for GitHub Pages, which serves the file directly.
+# The Artifact publisher instead wraps a fragment in its own skeleton, so the
+# two builds differ only by this wrapper and the print variant.
+STANDALONE = """<!doctype html>
+<html lang="en" data-variant="{variant}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{description}">
+<title>{title}</title>
+</head>
+<body>
+{content}</body>
+</html>
+"""
+
+
+def write_page(
+    payload: dict,
+    out_path: Path,
+    template_path: Path | None = None,
+    standalone: bool = False,
+    variant: str = "print",
+    description: str = "",
+) -> Path:
     template = (template_path or TEMPLATE_PATH).read_text(encoding="utf-8")
     if PLACEHOLDER not in template:
         raise ValueError(f"Template is missing the {PLACEHOLDER} placeholder")
@@ -275,7 +378,20 @@ def write_page(payload: dict, out_path: Path, template_path: Path | None = None)
     blob = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     # Guard against the JSON terminating the enclosing <script> element.
     blob = blob.replace("</", "<\\/")
+    rendered = template.replace(PLACEHOLDER, blob)
+
+    if standalone:
+        match = TITLE_PATTERN.search(rendered)
+        title = match.group(1).strip() if match else "Erge Mountain climate"
+        # The title moves into <head>; leaving it in <body> would be invalid.
+        rendered = TITLE_PATTERN.sub("", rendered, count=1)
+        rendered = STANDALONE.format(
+            variant=variant,
+            title=title,
+            description=description or title,
+            content=rendered,
+        )
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(template.replace(PLACEHOLDER, blob), encoding="utf-8")
+    out_path.write_text(rendered, encoding="utf-8")
     return out_path

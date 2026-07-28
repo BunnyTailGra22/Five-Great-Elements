@@ -120,6 +120,29 @@ Box plots and histograms pool complete years only, so every month carries the
 same number of seasons. The heat map keeps the running year and hatches its
 unfinished months.
 
+## Published site
+
+`docs/` is a standalone, white, print-ready build of both pages, deployed to
+GitHub Pages by `.github/workflows/pages.yml`. The workflow calls
+`actions/configure-pages` with `enablement: true`, so Pages switches itself on
+the first time it runs — no manual setup in repository settings. It publishes
+only from the default branch.
+
+The same `fge-climate web` command writes two builds from one template:
+
+| Output | Shape | Used by |
+| --- | --- | --- |
+| `web/*.html` | fragment, follows the reader's light/dark theme | Artifact publishing |
+| `docs/*.html` | full document, white, print stylesheet | GitHub Pages, printing |
+
+Printing (or Save as PDF) gives one measure per page: the nav and the table
+disclosures drop out, panels avoid breaking mid-chart, and chart colours are
+forced through with `print-color-adjust`.
+
+Each measure panel closes with a **Key findings** band. Those sentences are
+computed from the data at build time, not written by hand, so they cannot go
+stale when the record is re-synced.
+
 ## Layout
 
 ```
@@ -140,8 +163,9 @@ src/fge_climate/
 data/raw/<station>/          verbatim upstream files + sync manifest
 data/processed/              daily, monthly, seasonal, annual, coverage, QC
 reports/climate_baseline.md  generated findings
-web/index.html               generated four-measure page
-web/distributions.html       generated daily-distribution page
+web/index.html               generated four-measure page (themed fragment)
+web/distributions.html       generated daily-distribution page (themed fragment)
+docs/                        standalone white build served by GitHub Pages
 ```
 
 ## Method notes

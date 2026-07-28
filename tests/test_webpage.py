@@ -101,3 +101,62 @@ def test_missing_placeholder_is_an_error(tmp_path):
 
     with pytest.raises(ValueError, match="placeholder"):
         write_page({}, tmp_path / "index.html", template)
+
+
+def test_each_measure_carries_computed_findings():
+    payload = build_payload(make_config(2021), STATION, make_daily())
+
+    for measure in payload["measures"]:
+        findings = measure["findings"]
+        assert 1 <= len(findings) <= 4
+        for item in findings:
+            assert item["lead"] and item["text"]
+            # Findings must be derived, never a bare template left unfilled.
+            assert "{" not in item["text"]
+
+
+def test_wind_findings_warn_about_station_breaks():
+    payload = build_payload(make_config(2021), STATION, make_daily())
+    wind = next(m for m in payload["measures"] if m["key"] == "WS")
+    leads = [f["lead"] for f in wind["findings"]]
+
+    # WS has known step changes, so it must not present a bare trend.
+    assert "Treat trends with care" in leads
+    assert "Trend so far" not in leads
+
+
+def test_standalone_build_is_a_white_print_document(tmp_path):
+    payload = build_payload(make_config(2021), STATION, make_daily())
+    template = tmp_path / "t.html"
+    template.write_text(
+        '<title>My Page</title>\n<p>body</p>\n'
+        '<script type="application/json">' + PLACEHOLDER + "</script>",
+        encoding="utf-8",
+    )
+
+    out = write_page(payload, tmp_path / "index.html", template, standalone=True)
+    html = out.read_text(encoding="utf-8")
+
+    assert html.startswith("<!doctype html>")
+    assert 'data-variant="print"' in html
+    # The title moves into <head> and must not be left behind in the body.
+    assert "<head>" in html and "<title>My Page</title>" in html
+    assert html.index("<title>My Page</title>") < html.index("<body>")
+    assert html.count("<title>") == 1
+
+
+def test_fragment_build_stays_a_fragment(tmp_path):
+    payload = build_payload(make_config(2021), STATION, make_daily())
+    template = tmp_path / "t.html"
+    template.write_text(
+        '<title>My Page</title><script type="application/json">' + PLACEHOLDER + "</script>",
+        encoding="utf-8",
+    )
+
+    out = write_page(payload, tmp_path / "frag.html", template)
+    html = out.read_text(encoding="utf-8")
+
+    # The Artifact publisher supplies the skeleton; emitting one here would nest.
+    assert "<!doctype html>" not in html
+    assert "<body>" not in html
+    assert html.startswith("<title>My Page</title>")

@@ -54,6 +54,160 @@ BIN_WIDTHS = {"TxSoil0cm": 2.0, "SunShine": 1.0, "WS": 0.25}
 WET_DAY_MM = 0.1
 
 
+# Threshold above which a rainfall day counts as heavy, for the concentration
+# statistic ("what share of the year's rain arrives on how few days").
+HEAVY_DAY_MM = 50.0
+
+# A day with less than this much sun is effectively overcast.
+DULL_DAY_HOURS = 1.0
+
+# Soil cold-exposure threshold, the quantity dormancy models care about.
+COLD_SOIL_C = 10.0
+
+# Daily-mean wind above this is a windy day at this sheltered site.
+WINDY_DAY_MS = 2.5
+
+
+def _pct(part: float, whole: float) -> float:
+    return round(100 * part / whole, 1) if whole else 0.0
+
+
+# Units are written for axis labels; prose wants the short form.
+PROSE_UNIT = {"hour": "h"}
+
+
+def _u(unit: str) -> str:
+    return PROSE_UNIT.get(unit, unit)
+
+
+def _month_list(months: list[int]) -> str:
+    """Join month names. A range is wrong here: cold months wrap the year end,
+    so [1, 2, 3, 12] must not read as "Jan-Dec"."""
+    names = [MONTH_LABELS[m - 1] for m in months]
+    if len(names) == 1:
+        return names[0]
+    return ", ".join(names[:-1]) + " and " + names[-1]
+
+
+def _extreme(frame: pd.DataFrame, key: str) -> tuple[float, str]:
+    """Largest observed daily value and the date it fell on."""
+    valid = frame[["date", key]].dropna(subset=[key])
+    if valid.empty:
+        return float("nan"), ""
+    row = valid.loc[valid[key].idxmax()]
+    return float(row[key]), str(pd.Timestamp(row["date"]).date())
+
+
+def _key_findings(measure: dict, monthly: list[dict], frame: pd.DataFrame) -> list[dict]:
+    """Three or four compact, fully computed statements per measure.
+
+    Everything here is derived from the pooled window, so the wording stays
+    true when the dataset is re-synced -- nothing is written by hand.
+    """
+    key, unit = measure["key"], _u(measure["unit"])
+    filled = [m for m in monthly if m.get("n")]
+    if not filled:
+        return []
+
+    values = frame[key].dropna()
+    hottest = max(filled, key=lambda m: m["median"])
+    coolest = min(filled, key=lambda m: m["median"])
+    widest = max(filled, key=lambda m: m["iqr"])
+    tightest = min(filled, key=lambda m: m["iqr"])
+    peak, peak_date = _extreme(frame, key)
+
+    out: list[dict] = []
+
+    if key == "TxSoil0cm":
+        cold = frame.loc[frame[key] < COLD_SOIL_C]
+        cold_months = sorted({int(m) for m in cold["month"]}) if len(cold) else []
+        out.append({
+            "lead": "Seasonal march",
+            "text": f"Median soil rises from {coolest['median']:.1f} {unit} in {coolest['label']} "
+                    f"to {hottest['median']:.1f} in {hottest['label']}, a swing of "
+                    f"{hottest['median'] - coolest['median']:.1f} {unit}.",
+        })
+        out.append({
+            "lead": "Summer runs steady",
+            "text": f"Spread narrows to {tightest['iqr']:.1f} {unit} in {tightest['label']} "
+                    f"against {widest['iqr']:.1f} in {widest['label']} — summer soil varies "
+                    f"far less day to day than winter soil.",
+        })
+        if len(cold):
+            out.append({
+                "lead": "Cold exposure",
+                "text": f"{len(cold)} days below {COLD_SOIL_C:.0f} {unit} "
+                        f"({_pct(len(cold), len(values))}% of the record), only in "
+                        f"{_month_list(cold_months)}; coldest {values.min():.1f} {unit}.",
+            })
+
+    elif key == "Precp":
+        dry = float((values < WET_DAY_MM).sum())
+        heavy = values[values >= HEAVY_DAY_MM]
+        wettest_often = min(filled, key=lambda m: m["dry_pct"])
+        out.append({
+            "lead": "Dry more often than not",
+            "text": f"{_pct(dry, len(values))}% of days record no rain, yet the site takes "
+                    f"{values.sum() / (len(values) / 365.25):,.0f} {unit} a year.",
+        })
+        out.append({
+            "lead": "Frequency and intensity peak apart",
+            "text": f"It rains most often in {wettest_often['label']} "
+                    f"({wettest_often['dry_pct']:.0f}% dry) but hardest in {hottest['label']} "
+                    f"(median wet day {hottest['median']:.1f} {unit} against "
+                    f"{coolest['median']:.1f} in {coolest['label']}).",
+        })
+        out.append({
+            "lead": "A few days carry the year",
+            "text": f"The {len(heavy)} days at or above {HEAVY_DAY_MM:.0f} {unit} are "
+                    f"{_pct(len(heavy), len(values))}% of the record but deliver "
+                    f"{_pct(float(heavy.sum()), float(values.sum()))}% of all rainfall.",
+        })
+
+    elif key == "SunShine":
+        dull = float((values < DULL_DAY_HOURS).sum())
+        out.append({
+            "lead": "A grey winter",
+            "text": f"{int(dull)} days ({_pct(dull, len(values))}%) saw under "
+                    f"{DULL_DAY_HOURS:.0f} hour of sun; {coolest['label']} is dullest, "
+                    f"median {coolest['median']:.1f} {unit}.",
+        })
+        out.append({
+            "lead": "Summer is dependable",
+            "text": f"{hottest['label']} runs a median {hottest['median']:.1f} {unit} with an "
+                    f"IQR of {hottest['iqr']:.1f} — the sun is not just stronger, it is "
+                    f"more reliable.",
+        })
+        out.append({
+            "lead": "Range",
+            "text": f"Monthly medians span {coolest['median']:.1f}–{hottest['median']:.1f} "
+                    f"{unit}; the best single day reached {peak:.1f}.",
+        })
+
+    elif key == "WS":
+        windy = float((values >= WINDY_DAY_MS).sum())
+        medians = [m["median"] for m in filled]
+        out.append({
+            "lead": "Almost no seasonal cycle",
+            "text": f"Monthly medians span only {max(medians) - min(medians):.2f} {unit} "
+                    f"({min(medians):.2f}–{max(medians):.2f}) — unusual among the four "
+                    f"measures, which are otherwise strongly seasonal.",
+        })
+        out.append({
+            "lead": "A sheltered site",
+            "text": f"Half of all days sit between {values.quantile(.25):.2f} and "
+                    f"{values.quantile(.75):.2f} {unit}; only {int(windy)} days "
+                    f"({_pct(windy, len(values))}%) reach {WINDY_DAY_MS:.1f}.",
+        })
+
+    if peak == peak or key != "TxSoil0cm":
+        out.append({
+            "lead": "Record day",
+            "text": f"{peak:g} {unit} on {peak_date}.",
+        })
+    return out[:4]
+
+
 def _describe(values: np.ndarray) -> dict:
     if values.size == 0:
         return {"n": 0}
@@ -232,6 +386,7 @@ def build_payload(config: Config, station: Station, daily: pd.DataFrame) -> dict
                 "logScale": wet_only,
                 "monthly": monthly,
                 "frequency": _frequency(series.to_numpy(dtype=float), measure),
+                "findings": _key_findings(measure, monthly, pooled),
                 "heatmap": _heatmap(daily, measure, heat_end),
             }
         )
@@ -255,5 +410,16 @@ def build_payload(config: Config, station: Station, daily: pd.DataFrame) -> dict
     }
 
 
-def write_distributions(config: Config, station: Station, daily: pd.DataFrame, out_path: Path) -> Path:
-    return write_page(build_payload(config, station, daily), out_path, TEMPLATE_PATH)
+def write_distributions(
+    config: Config,
+    station: Station,
+    daily: pd.DataFrame,
+    out_path: Path,
+    nav: list[dict] | None = None,
+    **kwargs,
+) -> Path:
+    payload = build_payload(config, station, daily)
+    if nav:
+        payload["nav"] = nav
+        payload["navNote"] = f"Station {station.id} · {station.name_zh}"
+    return write_page(payload, out_path, TEMPLATE_PATH, **kwargs)

@@ -110,18 +110,65 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     return 0
 
 
+OVERVIEW_DESCRIPTION = (
+    "Soil temperature, rainfall, sunshine and wind at CWA station 82A750, "
+    "1.7 km from the Erge Mountain summit."
+)
+DISTRIBUTIONS_DESCRIPTION = (
+    "Box plots by month, frequency histograms and year-by-month heat maps for "
+    "the four measures, 2018 onwards."
+)
+
+
+def _nav(current: str) -> list[dict]:
+    pages = [("Overview", "index.html"), ("Daily distributions", "distributions.html")]
+    return [
+        {"label": label, "href": href, "current": href == current}
+        for label, href in pages
+    ]
+
+
 def cmd_web(args: argparse.Namespace) -> int:
     config = load_config()
     station = config.primary
 
     daily = pd.read_csv(PROCESSED_DIR / f"{station.id}_daily.csv", parse_dates=["date"])
-    payload = build_payload(config, station, daily)
-    path = write_page(payload, REPO_ROOT / "web" / "index.html")
-    window = payload["window"]
-    print(f"Wrote {path} ({window['start']}-{window['end']} common window)")
+    web = REPO_ROOT / "web"
+    docs = REPO_ROOT / "docs"
 
-    dist = write_distributions(config, station, daily, REPO_ROOT / "web" / "distributions.html")
-    print(f"Wrote {dist}")
+    # web/ holds fragments for the Artifact publisher, which supplies its own
+    # document skeleton and theme. docs/ holds standalone white documents for
+    # GitHub Pages and printing.
+    payload = build_payload(config, station, daily)
+    write_page(payload, web / "index.html")
+    window = payload["window"]
+
+    payload_docs = dict(payload)
+    payload_docs["nav"] = _nav("index.html")
+    payload_docs["navNote"] = f"Station {station.id} · {station.name_zh}"
+    write_page(
+        payload_docs,
+        docs / "index.html",
+        standalone=True,
+        description=OVERVIEW_DESCRIPTION,
+    )
+    print(f"Wrote web/index.html and docs/index.html "
+          f"({window['start']}-{window['end']} common window)")
+
+    write_distributions(config, station, daily, web / "distributions.html")
+    write_distributions(
+        config,
+        station,
+        daily,
+        docs / "distributions.html",
+        nav=_nav("distributions.html"),
+        standalone=True,
+        description=DISTRIBUTIONS_DESCRIPTION,
+    )
+    print("Wrote web/distributions.html and docs/distributions.html")
+
+    # Tell Pages not to run the output through Jekyll.
+    (docs / ".nojekyll").write_text("", encoding="utf-8")
     return 0
 
 

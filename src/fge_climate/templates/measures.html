@@ -369,6 +369,84 @@
     .chart-sub { min-height: 0; }
   }
 
+
+  /* ---- key findings ---- */
+  .findings {
+    padding: 1.1rem 1.35rem 1.25rem;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--rule);
+  }
+  .findings h3 {
+    margin: 0 0 0.7rem;
+    font-family: var(--mono); font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+    display: flex; align-items: center; gap: 0.45rem;
+  }
+  .findings h3::before {
+    content: ""; width: 8px; height: 8px; border-radius: 2px;
+    background: var(--hue); flex: none;
+  }
+  .findings ul {
+    margin: 0; padding: 0; list-style: none;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 0.5rem 1.75rem;
+  }
+  .findings li { color: var(--ink-2); line-height: 1.5; max-width: 62ch; }
+  .findings b { color: var(--ink); font-weight: 640; }
+
+  /* ---- site nav (GitHub Pages build only) ---- */
+  .nav {
+    display: flex; gap: 1.25rem; align-items: baseline; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 0.74rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    border-bottom: 1px solid var(--rule); padding-bottom: 0.9rem;
+  }
+  .nav a { color: var(--ink-3); text-decoration: none; }
+  .nav a:hover, .nav a:focus-visible { color: var(--ink); text-decoration: underline; }
+  .nav a[aria-current="page"] { color: var(--ink); font-weight: 650; }
+  .nav .spacer { margin-left: auto; color: var(--ink-3); text-transform: none; letter-spacing: 0.02em; }
+
+  /* ---------------------------------------------------------------
+     White build for GitHub Pages / print. Declared last so it beats
+     both the dark media query and any data-theme stamp.
+     --------------------------------------------------------------- */
+  :root[data-variant="print"] {
+    color-scheme: light;
+    --ground: #ffffff;
+    --panel: #ffffff;
+    --panel-2: #f6f7f7;
+    --ink: #12181a;
+    --ink-2: #444e51;
+    --ink-3: #6d7679;
+    --rule: #dcdfdf;
+    --rule-strong: #b0b6b6;
+    --surface-ring: #ffffff;
+    --m1: #d2551f; --m2: #1f66c0; --m3: #a8720a; --m4: #157f59;
+  }
+
+  @media print {
+    @page { margin: 12mm; }
+    body { background: #fff; font-size: 9.2pt; }
+    .wrap { max-width: none; padding: 0; gap: 0; }
+    .panel {
+      border-color: #c9cdcd;
+      break-before: page; page-break-before: always;
+      margin-bottom: 0;
+    }
+    .masthead + main .panel:first-child,
+    .panel:first-of-type { break-before: auto; page-break-before: auto; }
+    .panel-head, .stats, .view, .findings, .coverage, .split {
+      break-inside: avoid; page-break-inside: avoid;
+    }
+    /* Colour-bearing backgrounds must survive the print pipeline. */
+    .heat-cell, .cov-cell, .scale-step, .swatch, .stats, .findings {
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+    .tip, .nav { display: none !important; }
+    .table-wrap { display: none; }
+    a { color: inherit; text-decoration: none; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; animation: none !important; }
   }
@@ -376,6 +454,7 @@
 
 <div class="wrap">
 
+  <div id="nav"></div>
   <header class="masthead">
     <p class="eyebrow" id="eyebrow"></p>
     <h1>Four measures at the foot of <span class="zh">二格山</span></h1>
@@ -403,8 +482,24 @@
     v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
   const dec = (m) => (m.unit === "mm" ? 0 : m.unit === "m/s" ? 2 : 1);
 
+
+  function findingsBlock(m) {
+    if (!m.findings || !m.findings.length) return "";
+    const items = m.findings
+      .map((f) => `<li><b>${f.lead}</b> — ${f.text}</li>`).join("");
+    return `<div class="findings"><h3>Key findings</h3><ul>${items}</ul></div>`;
+  }
+
+  function navBlock() {
+    if (!P.nav || !P.nav.length) return "";
+    const links = P.nav.map((n) =>
+      `<a href="${n.href}"${n.current ? ' aria-current="page"' : ""}>${n.label}</a>`).join("");
+    return `<nav class="nav">${links}<span class="spacer">${P.navNote || ""}</span></nav>`;
+  }
+
   /* ---------------- masthead ---------------- */
   const st = P.station;
+  document.getElementById("nav").outerHTML = navBlock();
   document.getElementById("eyebrow").textContent =
     `Station ${st.id} · ${st.name_zh} · ${P.record.start}–${P.record.end}`;
 
@@ -814,6 +909,8 @@
           <span><i class="cov-key" style="background:var(--rule)"></i>nothing recorded</span>
         </div>
       </div>
+
+      ${findingsBlock(m)}
 
       <div class="table-wrap">
         <details>
