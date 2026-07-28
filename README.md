@@ -122,11 +122,24 @@ unfinished months.
 
 ## Published site
 
-`docs/` is a standalone, white, print-ready build of both pages, deployed to
-GitHub Pages by `.github/workflows/pages.yml`. The workflow calls
-`actions/configure-pages` with `enablement: true`, so Pages switches itself on
-the first time it runs — no manual setup in repository settings. It publishes
-only from the default branch.
+`docs/` is a standalone, white, print-ready build of both pages, ready to serve
+from GitHub Pages. It is committed by the daily sync, so the site follows the
+data.
+
+**Turning it on takes one setting** (GitHub does not let a workflow token create
+a Pages site, so this step cannot be automated):
+
+> Settings → Pages → Build and deployment → Source: **Deploy from a branch** →
+> Branch: the default branch, folder **`/docs`** → Save.
+
+The site then lives at `https://bunnytailgra22.github.io/Five-Great-Elements/`
+and refreshes on every commit to `docs/`. All links inside the pages are
+relative, so the project subpath works without configuration, and `.nojekyll`
+keeps Jekyll from reprocessing the output.
+
+`.github/workflows/pages.yml` is an optional alternative for the *GitHub
+Actions* Pages source. It is manual-dispatch only: on a push it would fail until
+that source is selected, and a red X on every commit is worse than a button.
 
 The same `fge-climate web` command writes two builds from one template:
 

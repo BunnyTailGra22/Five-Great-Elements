@@ -1,14 +1,17 @@
 name: Deploy Pages
 
-# Publishes docs/ — the standalone white, print-ready build written by
-# `fge-climate web` — to GitHub Pages. The daily climate-sync workflow commits
-# docs/ whenever the data changes, which is what triggers this.
+# OPTIONAL. Only needed if Pages is set to the "GitHub Actions" source.
+#
+# The simpler route needs no workflow at all: Settings -> Pages -> Deploy from
+# a branch -> the default branch, folder /docs. docs/ is committed by the daily
+# climate-sync workflow, so the site follows the data either way.
+#
+# This workflow is manual-dispatch only on purpose. Running it on every push
+# would fail with "Resource not accessible by integration" until Pages has been
+# switched to the Actions source, and a red X on every commit is worse than an
+# opt-in button.
 
 on:
-  push:
-    paths:
-      - "docs/**"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -16,7 +19,6 @@ permissions:
   pages: write
   id-token: write
 
-# Never cancel a running deployment; let it finish and queue the next.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -32,12 +34,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # No `enablement: true`: the Actions token cannot create a Pages site,
+      # so Pages must already be switched on in repository settings.
       - name: Configure Pages
-        # enablement: true turns Pages on the first time this runs, so no
-        # manual setup is needed in repository settings.
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload docs/
         uses: actions/upload-pages-artifact@v3
