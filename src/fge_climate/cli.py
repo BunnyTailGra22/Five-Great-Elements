@@ -10,9 +10,10 @@ import pandas as pd
 
 from . import report as report_mod
 from .build import build_daily, merge_codis_tail, write_outputs
-from .config import PROCESSED_DIR, REPORTS_DIR, load_config
+from .config import PROCESSED_DIR, REPO_ROOT, REPORTS_DIR, load_config
 from .indices import annual_indices, monthly_summary, seasonal_means
 from .sources import codis, mirror
+from .webpage import build_payload, write_page
 
 
 def cmd_sync(args: argparse.Namespace) -> int:
@@ -108,8 +109,21 @@ def cmd_analyze(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_web(args: argparse.Namespace) -> int:
+    config = load_config()
+    station = config.primary
+
+    daily = pd.read_csv(PROCESSED_DIR / f"{station.id}_daily.csv", parse_dates=["date"])
+    payload = build_payload(config, station, daily)
+    path = write_page(payload, REPO_ROOT / "web" / "index.html")
+
+    window = payload["window"]
+    print(f"Wrote {path} ({window['start']}-{window['end']} common window)")
+    return 0
+
+
 def cmd_all(args: argparse.Namespace) -> int:
-    for step in (cmd_sync, cmd_build, cmd_analyze):
+    for step in (cmd_sync, cmd_build, cmd_analyze, cmd_web):
         code = step(args)
         if code != 0:
             return code
@@ -138,7 +152,9 @@ def build_parser() -> argparse.ArgumentParser:
         func=cmd_analyze
     )
 
-    all_p = sub.add_parser("all", help="sync, build and analyze in one pass")
+    sub.add_parser("web", help="regenerate the four-measure web page").set_defaults(func=cmd_web)
+
+    all_p = sub.add_parser("all", help="sync, build, analyze and regenerate the page")
     all_p.add_argument("--with-codis", action="store_true")
     all_p.add_argument("--codis-days", type=int, default=45)
     all_p.set_defaults(func=cmd_all)

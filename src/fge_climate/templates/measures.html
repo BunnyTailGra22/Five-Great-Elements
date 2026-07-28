@@ -1,0 +1,863 @@
+<title>Four measures — Erge Mountain station 82A750</title>
+
+<style>
+  /* ---------------------------------------------------------------
+     Tokens. Light and dark are both authored; the theme toggle stamps
+     data-theme on :root and must beat the OS media query either way.
+     --------------------------------------------------------------- */
+  :root {
+    color-scheme: light;
+    --ground: #eceff0;
+    --panel: #fafbfb;
+    --panel-2: #f1f4f4;
+    --ink: #0f1a1d;
+    --ink-2: #4e6165;
+    --ink-3: #7b8b8e;
+    --rule: #d3dbdb;
+    --rule-strong: #b7c3c3;
+    --surface-ring: #fafbfb;
+
+    --m1: #eb6834;  /* soil        — categorical slot 2 */
+    --m2: #2a78d6;  /* rainfall    — slot 1 */
+    --m3: #eda100;  /* sunshine    — slot 4 */
+    --m4: #1baf7a;  /* wind        — slot 3 */
+
+    --sans: ui-sans-serif, -apple-system, "Segoe UI", "Noto Sans TC",
+            "PingFang TC", "Microsoft JhengHei", sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+    --step--1: clamp(0.72rem, 0.70rem + 0.1vw, 0.78rem);
+    --step-0:  clamp(0.88rem, 0.85rem + 0.15vw, 0.95rem);
+    --step-1:  clamp(1.05rem, 1.0rem + 0.3vw, 1.2rem);
+    --step-2:  clamp(1.35rem, 1.2rem + 0.7vw, 1.8rem);
+    --step-3:  clamp(1.9rem, 1.5rem + 1.9vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --ground: #101618;
+      --panel: #182023;
+      --panel-2: #1e282b;
+      --ink: #e6edeb;
+      --ink-2: #93a4a7;
+      --ink-3: #6d7f82;
+      --rule: #283336;
+      --rule-strong: #3a4a4e;
+      --surface-ring: #182023;
+
+      --m1: #d95926;
+      --m2: #3987e5;
+      --m3: #c98500;
+      --m4: #199e70;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #101618;
+    --panel: #182023;
+    --panel-2: #1e282b;
+    --ink: #e6edeb;
+    --ink-2: #93a4a7;
+    --ink-3: #6d7f82;
+    --rule: #283336;
+    --rule-strong: #3a4a4e;
+    --surface-ring: #182023;
+
+    --m1: #d95926;
+    --m2: #3987e5;
+    --m3: #c98500;
+    --m4: #199e70;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: var(--step-0);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: clamp(1.5rem, 1rem + 2vw, 3.5rem) clamp(1rem, 0.6rem + 1.6vw, 2.5rem) 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem);
+  }
+
+  /* ---------------- masthead ---------------- */
+  .masthead { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    margin: 0;
+  }
+
+  .masthead h1 {
+    margin: 0;
+    font-size: var(--step-3);
+    font-weight: 660;
+    letter-spacing: -0.025em;
+    line-height: 1.04;
+    text-wrap: balance;
+  }
+
+  .masthead h1 .zh { letter-spacing: 0.02em; }
+
+  .standfirst {
+    margin: 0;
+    max-width: 64ch;
+    font-size: var(--step-1);
+    color: var(--ink-2);
+    text-wrap: pretty;
+  }
+
+  .readout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .readout div { background: var(--panel); padding: 0.7rem 0.85rem; }
+  .readout dt {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 0.2rem;
+  }
+  .readout dd {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: var(--step-0);
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+  }
+
+  .caveat {
+    border-left: 3px solid var(--rule-strong);
+    padding: 0.15rem 0 0.15rem 1rem;
+    margin: 0;
+    max-width: 74ch;
+    color: var(--ink-2);
+  }
+  .caveat strong { color: var(--ink); font-weight: 620; }
+
+  /* ---------------- measure panel ---------------- */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .panel-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem 1.5rem;
+    align-items: end;
+    padding: 1.25rem 1.35rem 1.1rem;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+  }
+  /* Instrument tick rail: a measurement scale, not decoration. */
+  .panel-head::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--hue) 0 5px,
+      transparent 5px 10px
+    );
+  }
+
+  .panel-id { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+  .panel-id .zh {
+    font-size: var(--step-2);
+    font-weight: 640;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+  }
+  .panel-id .en {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .panel-id .key {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-3);
+  }
+  .swatch {
+    width: 9px; height: 9px; border-radius: 2px;
+    background: var(--hue);
+    box-shadow: 0 0 0 2px var(--surface-ring);
+    flex: none;
+  }
+
+  .hero { text-align: right; }
+  .hero .value {
+    font-family: var(--mono);
+    font-size: var(--step-2);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .hero .value .unit { font-size: 0.6em; color: var(--ink-2); margin-left: 0.2em; }
+  .hero .caption {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .why {
+    margin: 0;
+    padding: 0.9rem 1.35rem 1rem;
+    color: var(--ink-2);
+    max-width: 78ch;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .chart-cell { background: var(--panel); padding: 1.1rem 1.35rem 1.25rem; min-width: 0; }
+
+  .chart-title {
+    margin: 0 0 0.15rem;
+    font-size: var(--step-0);
+    font-weight: 620;
+    letter-spacing: -0.005em;
+  }
+  .chart-sub {
+    margin: 0 0 0.85rem;
+    min-height: 2.6em;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-3);
+  }
+
+  .plot { position: relative; }
+  .plot svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .tip {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -125%);
+    background: var(--ink);
+    color: var(--ground);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+    padding: 0.35rem 0.5rem;
+    border-radius: 3px;
+    white-space: nowrap;
+    transition: opacity 0.09s linear;
+    z-index: 5;
+  }
+  .tip.on { opacity: 1; }
+  .tip b { font-weight: 700; }
+
+  /* ---------------- coverage ---------------- */
+  .coverage { padding: 1.05rem 1.35rem 1.2rem; border-bottom: 1px solid var(--rule); }
+  .cov-strip { display: flex; gap: 2px; flex-wrap: wrap; margin: 0.55rem 0 0.7rem; }
+  .cov-cell {
+    width: 15px; height: 22px; border-radius: 1px;
+    background: var(--rule);
+    position: relative;
+  }
+  .cov-cell.partial { background: color-mix(in oklab, var(--hue) 42%, var(--panel)); }
+  .cov-cell.full { background: var(--hue); }
+  .cov-legend {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 0.68rem; color: var(--ink-3);
+  }
+  .cov-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .cov-key { width: 10px; height: 10px; border-radius: 1px; }
+
+  /* ---------------- table ---------------- */
+  .table-wrap { padding: 0 1.35rem 1.25rem; }
+  details > summary {
+    cursor: pointer;
+    padding: 0.85rem 0;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::before { content: "▸ "; color: var(--ink-3); }
+  details[open] > summary::before { content: "▾ "; }
+  summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 2px; }
+
+  .scroller { overflow-x: auto; max-height: 340px; overflow-y: auto; border: 1px solid var(--rule); border-radius: 3px; }
+  table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: 0.75rem; }
+  th, td { padding: 0.3rem 0.7rem; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th {
+    position: sticky; top: 0;
+    background: var(--panel-2);
+    color: var(--ink-2);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  tbody tr + tr td { border-top: 1px solid var(--rule); }
+  td.none { color: var(--ink-3); }
+
+  .foot {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-3);
+    line-height: 1.7;
+    border-top: 1px solid var(--rule);
+    padding-top: 1.25rem;
+  }
+  .foot a { color: var(--ink-2); }
+
+  /* Narrow screens: the hero caption is wide enough to crush the measure
+     name when both share a row, so stack them instead. */
+  @media (max-width: 560px) {
+    .panel-head {
+      grid-template-columns: 1fr;
+      align-items: start;
+      gap: 0.9rem;
+      padding: 1.1rem 1.1rem 1rem;
+    }
+    .hero { text-align: left; }
+    .hero .caption { display: block; max-width: 30ch; }
+    .chart-cell { padding: 1rem 1.1rem 1.1rem; }
+    .why, .coverage { padding-left: 1.1rem; padding-right: 1.1rem; }
+    .table-wrap { padding-left: 1.1rem; padding-right: 1.1rem; }
+    .chart-sub { min-height: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow" id="eyebrow"></p>
+    <h1>Four measures at the foot of <span class="zh">二格山</span></h1>
+    <p class="standfirst" id="standfirst"></p>
+    <dl class="readout" id="readout"></dl>
+    <p class="caveat" id="caveat"></p>
+  </header>
+
+  <main id="panels"></main>
+
+  <footer class="foot" id="foot"></footer>
+</div>
+
+<script type="application/json" id="payload">/*__PAYLOAD__*/</script>
+
+<script>
+(function () {
+  "use strict";
+
+  const P = JSON.parse(document.getElementById("payload").textContent);
+  const HUE = { 1: "var(--m1)", 2: "var(--m2)", 3: "var(--m3)", 4: "var(--m4)" };
+
+  const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  const fmt = (v, d) => v === null || v === undefined ? "–" :
+    v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const dec = (m) => (m.unit === "mm" ? 0 : m.unit === "m/s" ? 2 : 1);
+
+  /* ---------------- masthead ---------------- */
+  const st = P.station;
+  document.getElementById("eyebrow").textContent =
+    `Station ${st.id} · ${st.name_zh} · ${P.record.start}–${P.record.end}`;
+
+  document.getElementById("standfirst").textContent =
+    `Soil temperature, rainfall, sunshine and wind, measured ${st.elevation_m} m up the ` +
+    `north flank of ${P.area.name_en} — 1.7 km from the summit. Each panel shows the ` +
+    `seasonal cycle first, because that is what phenology answers to, then the full ` +
+    `length of the record so the gaps in it stay visible.`;
+
+  const readout = [
+    ["Station", st.id],
+    ["Position", `${st.lat.toFixed(4)}°N ${st.lon.toFixed(4)}°E`],
+    ["Elevation", `${st.elevation_m} m`],
+    ["Summit", `${P.area.summit_elevation_m} m`],
+    ["Record from", st.established],
+    ["All four measured", `${P.window.start}–${P.window.end}`],
+  ];
+  document.getElementById("readout").innerHTML = readout
+    .map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+
+  document.getElementById("caveat").innerHTML =
+    `<strong>Read the coverage strip before the trend.</strong> Only rainfall and wind ` +
+    `run the length of the record. The soil probe and the sunshine recorder both start ` +
+    `in 2018, so all four measures overlap for just ${P.window.end - P.window.start + 1} ` +
+    `years — ${P.window.start}–${P.window.end}, the window every "typical year" figure ` +
+    `here is taken over. Wind additionally carries step changes caused by the station, ` +
+    `not the weather, and is marked accordingly.`;
+
+  document.getElementById("foot").innerHTML =
+    `Generated ${P.generated} from CWA CODiS station ${st.id} (${st.name_zh}), ` +
+    `${st.address_zh}.<br>Missing-data sentinels and physically impossible values are ` +
+    `masked before any average is taken. A year is drawn only when its coverage clears ` +
+    `the gate shown in each panel; partial years are left as gaps rather than filled in.`;
+
+  /* ---------------- chart plumbing ---------------- */
+  /* A "nice" tick step (1, 2, 2.5, 5 x 10^k) for roughly `target` intervals. */
+  function niceStep(range, target) {
+    if (range <= 0) return 1;
+    const raw = range / target;
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const n = raw / mag;
+    return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * mag;
+  }
+
+  function scaleY(values, zeroBased) {
+    const clean = values.filter((v) => v !== null && v !== undefined && !isNaN(v));
+    if (!clean.length) return { lo: 0, hi: 1, ticks: [0, 1], decimals: 0 };
+
+    const min = Math.min(...clean);
+    const max = Math.max(...clean);
+    let rawLo, rawHi;
+    if (zeroBased) {
+      rawLo = 0;
+      rawHi = max || 1;
+    } else {
+      const pad = (max - min) * 0.15 || 1;
+      rawLo = min - pad;
+      rawHi = max + pad;
+    }
+
+    // Try a few tick densities and keep the one that wastes least space.
+    let best = null;
+    for (const target of [4, 5]) {
+      const step = niceStep(rawHi - rawLo, target);
+      const lo = zeroBased ? 0 : Math.floor(rawLo / step) * step;
+      const hi = Math.ceil(rawHi / step) * step;
+      if (!best || hi - lo < best.hi - best.lo) best = { lo, hi, step };
+    }
+
+    const ticks = [];
+    for (let t = best.lo; t <= best.hi + best.step * 1e-9; t += best.step) {
+      ticks.push(Number(t.toFixed(10)));
+    }
+    const decimals = Math.min(2, Math.max(0, Math.ceil(-Math.log10(best.step))));
+    return { lo: best.lo, hi: best.hi, ticks, decimals };
+  }
+
+  /* Halo so a direct label stays readable where it crosses a mark. */
+  function halo(node) {
+    node.setAttribute("stroke", css("--surface-ring"));
+    node.setAttribute("stroke-width", 3.5);
+    node.setAttribute("paint-order", "stroke fill");
+    node.setAttribute("stroke-linejoin", "round");
+    return node;
+  }
+
+  const SVG = "http://www.w3.org/2000/svg";
+  const el = (name, attrs, text) => {
+    const node = document.createElementNS(SVG, name);
+    for (const k in attrs) node.setAttribute(k, attrs[k]);
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+
+  function gridAndAxis(svg, box, yscale, fmtTick) {
+    yscale.ticks.forEach((t) => {
+      const y = box.y1 - ((t - yscale.lo) / (yscale.hi - yscale.lo)) * (box.y1 - box.y0);
+      svg.appendChild(el("line", {
+        x1: box.x0, x2: box.x1, y1: y, y2: y,
+        stroke: css("--rule"), "stroke-width": 1, "shape-rendering": "crispEdges",
+      }));
+      svg.appendChild(el("text", {
+        x: box.x0 - 8, y: y + 3.5, "text-anchor": "end",
+        fill: css("--ink-3"), "font-size": 10, "font-family": css("--mono"),
+      }, fmtTick(t)));
+    });
+  }
+
+  function attachTip(plot) {
+    const tip = document.createElement("div");
+    tip.className = "tip";
+    plot.appendChild(tip);
+    return {
+      show(x, y, html) {
+        tip.innerHTML = html;
+        tip.style.left = x + "px";
+        tip.style.top = y + "px";
+        tip.classList.add("on");
+      },
+      hide() { tip.classList.remove("on"); },
+    };
+  }
+
+  /* ---------------- seasonal cycle ---------------- */
+  function seasonal(plot, m) {
+    const w = plot.clientWidth || 420;
+    const h = Math.max(210, Math.min(260, w * 0.58));
+    const box = { x0: 46, x1: w - 12, y0: 16, y1: h - 26 };
+    const hue = css(`--m${m.slot}`);
+    const bars = m.agg === "sum";
+
+    const clim = m.climatology.filter((c) => c.mean !== null);
+    const all = [];
+    clim.forEach((c) => { all.push(c.hi, c.lo, c.mean); });
+    const ys = scaleY(all, m.key !== "TxSoil0cm");
+
+    plot.querySelectorAll("svg").forEach((n) => n.remove());
+    const svg = el("svg", { viewBox: `0 0 ${w} ${h}`, width: w, height: h, role: "img" });
+    svg.appendChild(el("title", {}, `${m.en} by month, ${P.window.start}-${P.window.end}`));
+
+    const X = (i) => box.x0 + ((i + 0.5) / 12) * (box.x1 - box.x0);
+    const Y = (v) => box.y1 - ((v - ys.lo) / (ys.hi - ys.lo)) * (box.y1 - box.y0);
+
+    gridAndAxis(svg, box, ys, (t) => fmt(t, ys.decimals));
+
+    if (bars) {
+      const bw = Math.max(8, ((box.x1 - box.x0) / 12) - 6);
+      clim.forEach((c) => {
+        const i = c.month - 1;
+        const x = X(i) - bw / 2;
+        const y = Y(c.mean);
+        svg.appendChild(el("rect", {
+          x, y, width: bw, height: Math.max(1, box.y1 - y),
+          rx: 4, ry: 4, fill: hue,
+        }));
+        // Year-to-year envelope as a whisker, not a second fill.
+        svg.appendChild(el("line", {
+          x1: X(i), x2: X(i), y1: Y(c.lo), y2: Y(c.hi),
+          stroke: css("--ink-3"), "stroke-width": 1.5, "stroke-linecap": "round",
+          opacity: 0.55,
+        }));
+      });
+    } else {
+      const area = clim.map((c) => `${X(c.month - 1)},${Y(c.hi)}`)
+        .concat(clim.slice().reverse().map((c) => `${X(c.month - 1)},${Y(c.lo)}`));
+      svg.appendChild(el("polygon", { points: area.join(" "), fill: hue, opacity: 0.14 }));
+      svg.appendChild(el("polyline", {
+        points: clim.map((c) => `${X(c.month - 1)},${Y(c.mean)}`).join(" "),
+        fill: "none", stroke: hue, "stroke-width": 2,
+        "stroke-linejoin": "round", "stroke-linecap": "round",
+      }));
+      clim.forEach((c) => {
+        svg.appendChild(el("circle", {
+          cx: X(c.month - 1), cy: Y(c.mean), r: 3.2,
+          fill: hue, stroke: css("--surface-ring"), "stroke-width": 2,
+        }));
+      });
+    }
+
+    // Direct-label the peak month only.
+    const peak = clim.reduce((a, b) => (b.mean > a.mean ? b : a), clim[0]);
+    if (peak) {
+      svg.appendChild(halo(el("text", {
+        x: X(peak.month - 1), y: Y(peak.mean) - 13, "text-anchor": "middle",
+        fill: css("--ink"), "font-size": 11, "font-weight": 650,
+        "font-family": css("--mono"),
+      }, `${fmt(peak.mean, dec(m))}`)));
+    }
+
+    m.climatology.forEach((c, i) => {
+      if (i % (w < 380 ? 2 : 1) !== 0) return;
+      svg.appendChild(el("text", {
+        x: X(i), y: box.y1 + 15, "text-anchor": "middle",
+        fill: css("--ink-3"), "font-size": 10, "font-family": css("--mono"),
+      }, c.label[0]));
+    });
+
+    const tip = attachTip(plot);
+    clim.forEach((c) => {
+      const i = c.month - 1;
+      const hit = el("rect", {
+        x: X(i) - (box.x1 - box.x0) / 24, y: box.y0,
+        width: (box.x1 - box.x0) / 12, height: box.y1 - box.y0,
+        fill: "transparent",
+      });
+      hit.addEventListener("pointerenter", () => {
+        tip.show(X(i), Y(c.mean), `<b>${c.label}</b> ${fmt(c.mean, dec(m))} ${m.unit}<br>` +
+          `range ${fmt(c.lo, dec(m))}–${fmt(c.hi, dec(m))} · ${c.n} yr`);
+      });
+      hit.addEventListener("pointerleave", () => tip.hide());
+      svg.appendChild(hit);
+    });
+
+    plot.insertBefore(svg, plot.firstChild);
+  }
+
+  /* ---------------- long record ---------------- */
+  function record(plot, m) {
+    const w = plot.clientWidth || 420;
+    const h = Math.max(210, Math.min(260, w * 0.58));
+    const hasBreaks = (m.breaks || []).length > 0;
+    const box = { x0: 46, x1: w - 12, y0: hasBreaks ? 30 : 20, y1: h - 26 };
+    const hue = css(`--m${m.slot}`);
+    const bars = m.agg === "sum";
+
+    const rows = m.annual.filter((r) => r.year <= P.window.end);
+    const known = rows.filter((r) => r.value !== null);
+    const ys = scaleY(known.map((r) => r.value), m.key !== "TxSoil0cm");
+
+    const y0 = rows[0].year;
+    const y1 = rows[rows.length - 1].year;
+    const X = (yr) => box.x0 + ((yr - y0 + 0.5) / (y1 - y0 + 1)) * (box.x1 - box.x0);
+    const Y = (v) => box.y1 - ((v - ys.lo) / (ys.hi - ys.lo)) * (box.y1 - box.y0);
+
+    plot.querySelectorAll("svg").forEach((n) => n.remove());
+    const svg = el("svg", { viewBox: `0 0 ${w} ${h}`, width: w, height: h, role: "img" });
+    svg.appendChild(el("title", {}, `${m.en} by year, ${y0}-${y1}`));
+
+    gridAndAxis(svg, box, ys, (t) => fmt(t, ys.decimals));
+
+    // Breaks are drawn behind the data as a labelled rule.
+    (m.breaks || []).forEach((b) => {
+      const x = X(b.year) - (box.x1 - box.x0) / (y1 - y0 + 1) / 2;
+      svg.appendChild(el("line", {
+        x1: x, x2: x, y1: box.y0 - 4, y2: box.y1,
+        stroke: css("--rule-strong"), "stroke-width": 1.5,
+      }));
+      svg.appendChild(el("text", {
+        x: x + 3, y: box.y0 - 9, fill: css("--ink-3"),
+        "font-size": 10, "font-family": css("--mono"),
+      }, b.year));
+    });
+
+    if (bars) {
+      const bw = Math.max(2, (box.x1 - box.x0) / (y1 - y0 + 1) - 2);
+      known.forEach((r) => {
+        const y = Y(r.value);
+        svg.appendChild(el("rect", {
+          x: X(r.year) - bw / 2, y, width: bw, height: Math.max(1, box.y1 - y),
+          rx: Math.min(3, bw / 2), ry: Math.min(3, bw / 2), fill: hue,
+        }));
+      });
+    } else {
+      // One polyline per contiguous block, so gaps stay gaps.
+      m.blocks.forEach(([a, b]) => {
+        const seg = known.filter((r) => r.year >= a && r.year <= b);
+        if (seg.length > 1) {
+          svg.appendChild(el("polyline", {
+            points: seg.map((r) => `${X(r.year)},${Y(r.value)}`).join(" "),
+            fill: "none", stroke: hue, "stroke-width": 2,
+            "stroke-linejoin": "round", "stroke-linecap": "round",
+          }));
+        }
+      });
+      known.forEach((r) => {
+        svg.appendChild(el("circle", {
+          cx: X(r.year), cy: Y(r.value), r: 3,
+          fill: hue, stroke: css("--surface-ring"), "stroke-width": 1.6,
+        }));
+      });
+    }
+
+    // Direct-label the first and last observed year, unless they would collide.
+    const first = known[0];
+    const last = known[known.length - 1];
+    const labels = first && last && X(last.year) - X(first.year) < 70 ? [last] : [first, last];
+    labels.forEach((r) => {
+      if (!r) return;
+      const isFirst = r === first && labels.length > 1;
+      svg.appendChild(halo(el("text", {
+        x: X(r.year) + (isFirst ? 4 : -4), y: Y(r.value) - 12,
+        "text-anchor": isFirst ? "start" : "end",
+        fill: css("--ink"), "font-size": 10.5, "font-weight": 640,
+        "font-family": css("--mono"),
+      }, fmt(r.value, dec(m)))));
+    });
+
+    const span = y1 - y0;
+    [y0, y0 + Math.round(span / 3), y0 + Math.round((2 * span) / 3), y1].forEach((yr) => {
+      svg.appendChild(el("text", {
+        x: X(yr), y: box.y1 + 15, "text-anchor": "middle",
+        fill: css("--ink-3"), "font-size": 10, "font-family": css("--mono"),
+      }, yr));
+    });
+
+    const tip = attachTip(plot);
+    rows.forEach((r) => {
+      const bw = (box.x1 - box.x0) / (y1 - y0 + 1);
+      const hit = el("rect", {
+        x: X(r.year) - bw / 2, y: box.y0, width: bw, height: box.y1 - box.y0,
+        fill: "transparent",
+      });
+      hit.addEventListener("pointerenter", () => {
+        const body = r.value === null
+          ? `coverage ${(r.coverage * 100).toFixed(0)}% — below gate, not drawn`
+          : `${fmt(r.value, dec(m))} ${m.unit}${m.agg === "sum" ? " total" : " mean"}`;
+        tip.show(X(r.year), r.value === null ? box.y1 - 20 : Y(r.value), `<b>${r.year}</b> ${body}`);
+      });
+      hit.addEventListener("pointerleave", () => tip.hide());
+      svg.appendChild(hit);
+    });
+
+    plot.insertBefore(svg, plot.firstChild);
+  }
+
+  /* ---------------- panels ---------------- */
+  const container = document.getElementById("panels");
+  container.style.display = "flex";
+  container.style.flexDirection = "column";
+  container.style.gap = "clamp(1.25rem, 1rem + 1vw, 2rem)";
+
+  P.measures.forEach((m) => {
+    const panel = document.createElement("section");
+    panel.className = "panel";
+    panel.style.setProperty("--hue", HUE[m.slot]);
+
+    const trendText = (() => {
+      const t = m.segment_trend;
+      if (!t || t.slope_per_decade === null) return "record too short or too broken for a trend";
+      const sig = t.p_value !== null && t.p_value < 0.05 ? "significant" : "not significant";
+      const sign = t.slope_per_decade > 0 ? "+" : "";
+      return `${sign}${fmt(t.slope_per_decade, 2)} ${m.unit}/decade over ${t.start}–${t.end} ` +
+             `(${t.n} yr, ${sig})`;
+    })();
+
+    const gatePct = Math.round(m.gate * 100);
+    const breakNote = (m.breaks || []).length
+      ? " · rules mark station changes: " +
+        m.breaks.map((b) => `${b.year} ${b.label}`).join(", ")
+      : "";
+    const heroLabel = m.agg === "sum" ? "typical year total" : "typical year mean";
+    const heroValue = m.agg === "sum" ? fmt(m.window_mean, 0) : fmt(m.window_mean, dec(m));
+
+    const covCells = m.annual.map((r) => {
+      const cls = r.value !== null ? "full" : r.coverage > 0.05 ? "partial" : "";
+      return `<span class="cov-cell ${cls}" title="${r.year} — ${(r.coverage * 100).toFixed(0)}% of days"></span>`;
+    }).join("");
+
+    const rowsHtml = m.annual.slice().reverse().map((r) => `
+      <tr><td>${r.year}</td>
+      <td class="${r.value === null ? "none" : ""}">${r.value === null ? "not drawn" : fmt(r.value, dec(m))}</td>
+      <td>${(r.coverage * 100).toFixed(0)}%</td></tr>`).join("");
+
+    const climRows = m.climatology.map((c) => `
+      <tr><td>${c.label}</td>
+      <td>${c.mean === null ? "–" : fmt(c.mean, dec(m))}</td>
+      <td>${c.mean === null ? "–" : fmt(c.lo, dec(m))}</td>
+      <td>${c.mean === null ? "–" : fmt(c.hi, dec(m))}</td></tr>`).join("");
+
+    panel.innerHTML = `
+      <div class="panel-head">
+        <div class="panel-id">
+          <span class="zh">${m.zh}</span>
+          <span class="en">${m.en}</span>
+          <span class="key"><i class="swatch"></i>${m.key} · ${m.unit}</span>
+        </div>
+        <div class="hero">
+          <div class="value">${heroValue}<span class="unit">${m.unit}${m.agg === "sum" ? "/yr" : ""}</span></div>
+          <div class="caption">${heroLabel} · ${P.window.start}–${P.window.end}</div>
+        </div>
+      </div>
+
+      <p class="why">${m.why}</p>
+
+      <div class="charts">
+        <div class="chart-cell">
+          <h3 class="chart-title">Seasonal cycle</h3>
+          <p class="chart-sub">${m.agg === "sum" ? "mean monthly total" : "mean of daily values"} ·
+            band shows year-to-year range · ${P.window.start}–${P.window.end}</p>
+          <div class="plot" data-chart="seasonal"></div>
+        </div>
+        <div class="chart-cell">
+          <h3 class="chart-title">The whole record</h3>
+          <p class="chart-sub">${m.agg === "sum" ? "annual total" : "annual mean"} ·
+            gaps are years below the ${gatePct}% coverage gate${breakNote}</p>
+          <div class="plot" data-chart="record"></div>
+        </div>
+      </div>
+
+      <div class="coverage">
+        <h3 class="chart-title">Coverage, ${m.annual[0].year}–${m.annual[m.annual.length - 1].year}</h3>
+        <p class="chart-sub">${m.record_years} usable years · trend: ${trendText}</p>
+        <div class="cov-strip">${covCells}</div>
+        <div class="cov-legend">
+          <span><i class="cov-key" style="background:var(--hue)"></i>clears the ${gatePct}% gate</span>
+          <span><i class="cov-key" style="background:color-mix(in oklab, var(--hue) 42%, var(--panel))"></i>partial year</span>
+          <span><i class="cov-key" style="background:var(--rule)"></i>nothing recorded</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <details>
+          <summary>Table view — every value plotted above</summary>
+          <div class="scroller">
+            <table>
+              <thead><tr><th>Month</th><th>Mean</th><th>Lowest yr</th><th>Highest yr</th></tr></thead>
+              <tbody>${climRows}</tbody>
+            </table>
+          </div>
+          <div class="scroller" style="margin-top:0.75rem">
+            <table>
+              <thead><tr><th>Year</th><th>${m.agg === "sum" ? "Total" : "Mean"} (${m.unit})</th><th>Coverage</th></tr></thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </div>
+        </details>
+      </div>`;
+
+    container.appendChild(panel);
+
+    const plots = panel.querySelectorAll(".plot");
+    const draw = () => {
+      seasonal(plots[0], m);
+      record(plots[1], m);
+    };
+    draw();
+
+    if (window.ResizeObserver) {
+      let last = plots[0].clientWidth;
+      new ResizeObserver(() => {
+        if (Math.abs(plots[0].clientWidth - last) > 8) { last = plots[0].clientWidth; draw(); }
+      }).observe(plots[0]);
+    }
+    panel._redraw = draw;
+  });
+
+  // Charts read CSS tokens at draw time, so a theme change needs a repaint.
+  const repaint = () => document.querySelectorAll(".panel").forEach((p) => p._redraw && p._redraw());
+  if (window.matchMedia) {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", repaint);
+  }
+  new MutationObserver(repaint).observe(document.documentElement, {
+    attributes: true, attributeFilter: ["data-theme"],
+  });
+})();
+</script>

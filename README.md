@@ -55,7 +55,8 @@ export PYTHONPATH=src
 python -m fge_climate.cli sync      # download raw yearly files (incremental)
 python -m fge_climate.cli build     # QC + tidy + indices
 python -m fge_climate.cli analyze   # regenerate the report
-python -m fge_climate.cli all       # all three
+python -m fge_climate.cli web       # regenerate web/index.html
+python -m fge_climate.cli all       # all four
 ```
 
 `build --with-codis` additionally pulls the last 45 days straight from the CODiS
@@ -73,7 +74,27 @@ daily commit carries only the processed outputs; CI caches the raw tree to keep
 the sync incremental there too.
 
 `.github/workflows/climate-sync.yml` runs this daily at 04:10 Taipei time, runs
-the tests, rebuilds, regenerates the report and commits any change.
+the tests, rebuilds, regenerates the report and the web page, and commits any
+change.
+
+## The four-measure page
+
+`web/index.html` charts the four measures the phenology work depends on —
+`TxSoil0cm` 地溫, `Precp` 日降水量, `SunShine` 日照時數 and `WS` 風速 — each with
+its seasonal cycle, its full record, and a per-year coverage strip. It is
+generated from `data/processed/`, so it never drifts from the dataset.
+
+Two things the page is built to make unavoidable:
+
+- **The four measures only overlap for 2019–2025.** The soil probe and sunshine
+  recorder both start in 2018, and rainfall's 2018 misses the coverage gate. Every
+  "typical year" figure on the page is taken over that common window.
+- **Gaps are drawn as gaps.** A year below its coverage gate is left empty rather
+  than interpolated, and wind's station breaks are marked on the record itself.
+
+Colours come from the validated categorical palette in slot order, so adjacent
+panels clear the colourblind-separation gate in both light and dark mode; every
+chart also ships a table view.
 
 ## Layout
 
@@ -88,9 +109,12 @@ src/fge_climate/
   trends.py                  Theil-Sen slopes, Mann-Kendall tests
   homogeneity.py             Pettitt changepoints, break attribution
   report.py                  report generation
+  webpage.py                 payload for the four-measure page
+  templates/measures.html    page template (charts are inline SVG, no libraries)
 data/raw/<station>/          verbatim upstream files + sync manifest
 data/processed/              daily, monthly, seasonal, annual, coverage, QC
 reports/climate_baseline.md  generated findings
+web/index.html               generated four-measure page
 ```
 
 ## Method notes
