@@ -1,0 +1,98 @@
+name: Climate sync
+
+on:
+  schedule:
+    # 20:10 UTC daily = 04:10 next day in Taipei, after CODiS has settled the
+    # previous day and the upstream mirror's own daily job has run.
+    - cron: "10 20 * * *"
+  workflow_dispatch:
+    inputs:
+      with_codis:
+        description: "Also top up the recent tail directly from the CODiS API"
+        type: boolean
+        default: false
+  push:
+    paths:
+      - "src/**"
+      - "config/**"
+      - "tests/**"
+      - ".github/workflows/climate-sync.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: climate-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pytest
+
+      - name: Run tests
+        run: python -m pytest -q
+
+      # data/raw is gitignored. Caching it preserves the ETag manifest across
+      # runs, so a daily sync re-downloads only the years that actually changed.
+      - name: Restore raw station cache
+        uses: actions/cache@v4
+        with:
+          path: data/raw
+          key: raw-stations-${{ hashFiles('config/stations.yml') }}-${{ github.run_id }}
+          restore-keys: |
+            raw-stations-${{ hashFiles('config/stations.yml') }}-
+            raw-stations-
+
+      - name: Sync raw station data
+        run: python -m fge_climate.cli sync
+        env:
+          PYTHONPATH: src
+
+      - name: Build processed datasets
+        run: |
+          if [ "${{ inputs.with_codis }}" = "true" ]; then
+            python -m fge_climate.cli build --with-codis
+          else
+            python -m fge_climate.cli build
+          fi
+        env:
+          PYTHONPATH: src
+
+      - name: Regenerate baseline report
+        run: python -m fge_climate.cli analyze
+        env:
+          PYTHONPATH: src
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data reports
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          latest=$(tail -n 1 data/processed/82A750_daily.csv | cut -d, -f1)
+          git commit -m "data: sync climate record through ${latest}"
+          # The scheduled job races nothing but a human push; rebase and retry.
+          for attempt in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "Push failed (attempt ${attempt}); rebasing on origin."
+            git pull --rebase origin "${GITHUB_REF_NAME}" || exit 1
+            sleep $((attempt * 4))
+          done
+          exit 1

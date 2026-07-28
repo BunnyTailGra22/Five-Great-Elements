@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fge-climate"
+version = "0.1.0"
+description = "Climate dataset sync and phenology indices for the Erge Mountain study area"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "requests>=2.28",
+    "PyYAML>=6.0",
+]
+
+[project.scripts]
+fge-climate = "fge_climate.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

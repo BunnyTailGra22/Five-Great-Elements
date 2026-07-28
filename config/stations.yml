@@ -1,0 +1,71 @@
+# Station registry for the Erge Mountain (二格山) phenology-climate baseline.
+#
+# Coordinates and metadata come from the CWA station catalogue mirrored at
+# https://github.com/Raingel/weather_station_list
+
+project:
+  name: "Erge Mountain phenology climate base"
+  timezone: "Asia/Taipei"
+
+# Study area the climate record is meant to represent.
+study_area:
+  name_zh: "二格山"
+  name_en: "Erge Mountain"
+  summit_lat: 24.9436
+  summit_lon: 121.6206
+  summit_elevation_m: 678
+
+stations:
+  - id: "82A750"
+    name_zh: "茶改北部分場"
+    name_en: "TRES Northern Branch"
+    station_type: "農業站"          # agricultural station; required by the CODiS API
+    elevation_m: 401
+    lat: 24.955778
+    lon: 121.631222
+    established: "1987-05-01"
+    address_zh: "新北市石碇區格頭村北宜路五段12號"
+    role: primary
+    note: >
+      Sits in Getou village at the northern foot of Erge Mountain, roughly
+      1.7 km from the summit and 277 m below it. It is the closest station
+      with a multi-decadal record, and being a tea-research station it also
+      carries soil temperature - directly relevant to phenology.
+
+  # Reference stations. Not used for the climatology itself; they exist so that
+  # breaks in the primary record can be separated from real regional climate by
+  # differencing. Regional weather is common to both and cancels out.
+  - id: "466930"
+    name_zh: "竹子湖"
+    name_en: "Zhuzihu"
+    station_type: "署屬有人站"
+    elevation_m: 607.1
+    lat: 25.162078
+    lon: 121.544547
+    established: "1943-01-01"
+    role: reference
+    note: >
+      Staffed montane station, 24.5 km away and at a comparable elevation, with
+      an unbroken daily record across every decade of the target series. The
+      primary homogeneity reference.
+
+  - id: "C0A530"
+    name_zh: "坪林"
+    name_en: "Pinglin"
+    station_type: "署屬自動站"
+    elevation_m: 300.0
+    lat: 24.938183
+    lon: 121.709750
+    established: "1987-06-01"
+    role: reference
+    note: >
+      Nearest station of any kind at 8.2 km, same valley system and similar
+      elevation. Mean temperature is complete, but daily max/min only begin
+      around 2015, so it supports fewer indices than Zhuzihu.
+
+# Years to pull. `start` is the first year with usable daily rows; the 1987-1989
+# files exist upstream but are empty.
+ingest:
+  start_year: 1990
+  # `end_year: null` means "current year".
+  end_year: null

@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+.DS_Store
+
+# Verbatim upstream station files (~20 MB, re-downloaded by `fge-climate sync`).
+# Kept out of git so the daily sync commit stays small; CI caches them instead.
+# Everything downstream in data/processed/ IS tracked.
+data/raw/
