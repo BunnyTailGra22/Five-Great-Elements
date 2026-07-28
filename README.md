@@ -55,7 +55,7 @@ export PYTHONPATH=src
 python -m fge_climate.cli sync      # download raw yearly files (incremental)
 python -m fge_climate.cli build     # QC + tidy + indices
 python -m fge_climate.cli analyze   # regenerate the report
-python -m fge_climate.cli web       # regenerate web/index.html
+python -m fge_climate.cli web       # regenerate both web/ pages
 python -m fge_climate.cli all       # all four
 ```
 
@@ -74,7 +74,7 @@ daily commit carries only the processed outputs; CI caches the raw tree to keep
 the sync incremental there too.
 
 `.github/workflows/climate-sync.yml` runs this daily at 04:10 Taipei time, runs
-the tests, rebuilds, regenerates the report and the web page, and commits any
+the tests, rebuilds, regenerates the report and both web pages, and commits any
 change.
 
 ## The four-measure page
@@ -96,6 +96,30 @@ Colours come from the validated categorical palette in slot order, so adjacent
 panels clear the colourblind-separation gate in both light and dark mode; every
 chart also ships a table view.
 
+## Daily distributions since 2018
+
+`web/distributions.html` is the companion analysis at daily resolution —
+11,461 observations over 2,922 days — with three views per measure: a **box
+plot by month**, a **frequency** histogram, and a **heat map by month**
+(year × month). Both pages come from `fge-climate web`.
+
+2018 is the right floor for pooling, and not only because the soil probe and
+sunshine recorder start there: every artificial break in the record (2002, 2007,
+2016) falls *before* it, so this window needs no homogeneity adjustment.
+
+Two analytic choices worth knowing:
+
+- **Rainfall boxes describe wet days only** (≥ 0.1 mm), on a log axis. Daily
+  rainfall is 47.5% zeros, which collapses a linear box plot to a median of 0
+  with everything else an outlier. The dry-day fraction is reported per month
+  alongside, so nothing is hidden.
+- **Frequency uses rainfall classes** rather than equal-width bins for the same
+  reason; the other three measures use equal-width bins.
+
+Box plots and histograms pool complete years only, so every month carries the
+same number of seasons. The heat map keeps the running year and hatches its
+unfinished months.
+
 ## Layout
 
 ```
@@ -110,11 +134,14 @@ src/fge_climate/
   homogeneity.py             Pettitt changepoints, break attribution
   report.py                  report generation
   webpage.py                 payload for the four-measure page
+  distributions.py           daily box/frequency/heat-map statistics
   templates/measures.html    page template (charts are inline SVG, no libraries)
+  templates/distributions.html   daily-distribution page template
 data/raw/<station>/          verbatim upstream files + sync manifest
 data/processed/              daily, monthly, seasonal, annual, coverage, QC
 reports/climate_baseline.md  generated findings
 web/index.html               generated four-measure page
+web/distributions.html       generated daily-distribution page
 ```
 
 ## Method notes

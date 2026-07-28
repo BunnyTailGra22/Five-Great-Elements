@@ -1,0 +1,712 @@
+<title>Daily distributions since 2018 — Erge Mountain station 82A750</title>
+
+<style>
+  :root {
+    color-scheme: light;
+    --ground: #eceff0;
+    --panel: #fafbfb;
+    --panel-2: #f1f4f4;
+    --ink: #0f1a1d;
+    --ink-2: #4e6165;
+    --ink-3: #7b8b8e;
+    --rule: #d3dbdb;
+    --rule-strong: #b7c3c3;
+    --surface-ring: #fafbfb;
+
+    --m1: #eb6834;
+    --m2: #2a78d6;
+    --m3: #eda100;
+    --m4: #1baf7a;
+
+    --sans: ui-sans-serif, -apple-system, "Segoe UI", "Noto Sans TC",
+            "PingFang TC", "Microsoft JhengHei", sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+
+    --step--1: clamp(0.72rem, 0.70rem + 0.1vw, 0.78rem);
+    --step-0:  clamp(0.88rem, 0.85rem + 0.15vw, 0.95rem);
+    --step-1:  clamp(1.05rem, 1.0rem + 0.3vw, 1.2rem);
+    --step-2:  clamp(1.35rem, 1.2rem + 0.7vw, 1.8rem);
+    --step-3:  clamp(1.9rem, 1.5rem + 1.9vw, 3.1rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) {
+      color-scheme: dark;
+      --ground: #101618; --panel: #182023; --panel-2: #1e282b;
+      --ink: #e6edeb; --ink-2: #93a4a7; --ink-3: #6d7f82;
+      --rule: #283336; --rule-strong: #3a4a4e; --surface-ring: #182023;
+      --m1: #d95926; --m2: #3987e5; --m3: #c98500; --m4: #199e70;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #101618; --panel: #182023; --panel-2: #1e282b;
+    --ink: #e6edeb; --ink-2: #93a4a7; --ink-3: #6d7f82;
+    --rule: #283336; --rule-strong: #3a4a4e; --surface-ring: #182023;
+    --m1: #d95926; --m2: #3987e5; --m3: #c98500; --m4: #199e70;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: var(--sans); font-size: var(--step-0); line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1240px; margin: 0 auto;
+    padding: clamp(1.5rem, 1rem + 2vw, 3.5rem) clamp(1rem, 0.6rem + 1.6vw, 2.5rem) 5rem;
+    display: flex; flex-direction: column;
+    gap: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem);
+  }
+
+  .eyebrow {
+    font-family: var(--mono); font-size: var(--step--1);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-2); margin: 0;
+  }
+  .masthead { display: flex; flex-direction: column; gap: 1.15rem; }
+  .masthead h1 {
+    margin: 0; font-size: var(--step-3); font-weight: 660;
+    letter-spacing: -0.025em; line-height: 1.04; text-wrap: balance;
+  }
+  .standfirst { margin: 0; max-width: 66ch; font-size: var(--step-1); color: var(--ink-2); text-wrap: pretty; }
+
+  .readout {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px; background: var(--rule); border: 1px solid var(--rule);
+    border-radius: 3px; overflow: hidden;
+  }
+  .readout div { background: var(--panel); padding: 0.7rem 0.85rem; }
+  .readout dt {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.11em;
+    text-transform: uppercase; color: var(--ink-3); margin: 0 0 0.2rem;
+  }
+  .readout dd {
+    margin: 0; font-family: var(--mono); font-size: var(--step-0);
+    font-variant-numeric: tabular-nums; color: var(--ink);
+  }
+
+  .caveat {
+    border-left: 3px solid var(--rule-strong); padding: 0.15rem 0 0.15rem 1rem;
+    margin: 0; max-width: 76ch; color: var(--ink-2);
+  }
+  .caveat strong { color: var(--ink); font-weight: 620; }
+
+  .panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; }
+
+  .panel-head {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem 1.5rem; align-items: end;
+    padding: 1.25rem 1.35rem 1.1rem; border-bottom: 1px solid var(--rule); position: relative;
+  }
+  .panel-head::before {
+    content: ""; position: absolute; inset: 0 auto 0 0; width: 4px;
+    background: repeating-linear-gradient(to bottom, var(--hue) 0 5px, transparent 5px 10px);
+  }
+  .panel-id { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+  .panel-id .zh { font-size: var(--step-2); font-weight: 640; letter-spacing: 0.01em; line-height: 1.15; }
+  .panel-id .en {
+    font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--ink-2);
+  }
+  .panel-id .key {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3);
+  }
+  .swatch {
+    width: 9px; height: 9px; border-radius: 2px; background: var(--hue);
+    box-shadow: 0 0 0 2px var(--surface-ring); flex: none;
+  }
+  .hero { text-align: right; }
+  .hero .value {
+    font-family: var(--mono); font-size: var(--step-2); font-weight: 600;
+    font-variant-numeric: tabular-nums; letter-spacing: -0.01em; white-space: nowrap;
+  }
+  .hero .value .unit { font-size: 0.6em; color: var(--ink-2); margin-left: 0.2em; }
+  .hero .caption {
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--ink-3);
+  }
+
+  /* Five-number summary strip. */
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+    gap: 1px; background: var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .stats div { background: var(--panel); padding: 0.6rem 0.8rem; }
+  .stats dt {
+    font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-3); margin: 0 0 0.15rem;
+  }
+  .stats dd {
+    margin: 0; font-family: var(--mono); font-size: 0.92rem;
+    font-variant-numeric: tabular-nums; color: var(--ink);
+  }
+
+  .view { padding: 1.15rem 1.35rem 1.35rem; border-bottom: 1px solid var(--rule); }
+  .view:last-of-type { border-bottom: 0; }
+
+  .split {
+    display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+    gap: 1px; background: var(--rule); border-bottom: 1px solid var(--rule);
+  }
+  .split > .view { border-bottom: 0; }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+
+  .view-title { margin: 0 0 0.15rem; font-size: var(--step-0); font-weight: 620; letter-spacing: -0.005em; }
+  .view-sub {
+    margin: 0 0 0.9rem; font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.04em; color: var(--ink-3); line-height: 1.6;
+  }
+
+  .plot { position: relative; }
+  .plot svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+  .tip {
+    position: absolute; pointer-events: none; opacity: 0;
+    transform: translate(-50%, -118%);
+    background: var(--ink); color: var(--ground);
+    font-family: var(--mono); font-size: 0.7rem; line-height: 1.45;
+    font-variant-numeric: tabular-nums;
+    padding: 0.4rem 0.55rem; border-radius: 3px; white-space: nowrap;
+    transition: opacity 0.09s linear; z-index: 6;
+  }
+  .tip.on { opacity: 1; }
+  .tip b { font-weight: 700; }
+
+  /* ---- heat map ---- */
+  .heat { display: grid; gap: 2px; font-family: var(--mono); }
+  .heat-row { display: grid; grid-template-columns: 3.4rem repeat(12, minmax(0, 1fr)); gap: 2px; align-items: center; }
+  .heat-lab { font-size: 0.7rem; color: var(--ink-3); text-align: right; padding-right: 0.4rem; font-variant-numeric: tabular-nums; }
+  .heat-cell {
+    aspect-ratio: 1 / 0.72; border-radius: 2px; background: var(--rule);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.6rem; color: var(--ink-2); cursor: default;
+  }
+  .heat-cell.empty {
+    background: repeating-linear-gradient(
+      -45deg, transparent 0 3px, var(--rule) 3px 4px
+    );
+    box-shadow: inset 0 0 0 1px var(--rule-strong);
+  }
+  .heat-head { font-size: 0.66rem; color: var(--ink-3); text-align: center; }
+
+  .scale { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.85rem; flex-wrap: wrap; }
+  .scale-bar { display: flex; gap: 2px; }
+  .scale-step { width: 26px; height: 11px; border-radius: 2px; }
+  .scale-lab { font-family: var(--mono); font-size: 0.66rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+  details > summary {
+    cursor: pointer; padding: 0.85rem 0; font-family: var(--mono); font-size: 0.72rem;
+    letter-spacing: 0.09em; text-transform: uppercase; color: var(--ink-2); list-style: none;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::before { content: "▸ "; color: var(--ink-3); }
+  details[open] > summary::before { content: "▾ "; }
+  summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; border-radius: 2px; }
+
+  .table-wrap { padding: 0 1.35rem 1.25rem; }
+  .scroller { overflow-x: auto; max-height: 360px; overflow-y: auto; border: 1px solid var(--rule); border-radius: 3px; }
+  table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: 0.74rem; }
+  th, td { padding: 0.3rem 0.65rem; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th {
+    position: sticky; top: 0; background: var(--panel-2); color: var(--ink-2);
+    font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    font-size: 0.66rem; border-bottom: 1px solid var(--rule);
+  }
+  tbody tr + tr td { border-top: 1px solid var(--rule); }
+
+  .foot {
+    font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3);
+    line-height: 1.7; border-top: 1px solid var(--rule); padding-top: 1.25rem;
+  }
+
+  @media (max-width: 560px) {
+    .panel-head { grid-template-columns: 1fr; align-items: start; gap: 0.9rem; padding: 1.1rem; }
+    .hero { text-align: left; }
+    .view { padding: 1rem 1.1rem 1.1rem; }
+    .table-wrap { padding-left: 1.1rem; padding-right: 1.1rem; }
+    .heat-row { grid-template-columns: 2.6rem repeat(12, minmax(0, 1fr)); }
+    .heat-cell { font-size: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow" id="eyebrow"></p>
+    <h1>Daily distributions since 2018</h1>
+    <p class="standfirst" id="standfirst"></p>
+    <dl class="readout" id="readout"></dl>
+    <p class="caveat" id="caveat"></p>
+  </header>
+
+  <main id="panels"></main>
+  <footer class="foot" id="foot"></footer>
+</div>
+
+<script type="application/json" id="payload">{"generated":"2026-07-28 03:23 UTC","station":{"id":"82A750","name_zh":"茶改北部分場","elevation_m":401.0},"area":{"name_zh":"二格山","name_en":"Erge Mountain"},"window":{"start":2018,"end":2025},"heatmapEnd":2026,"totalObservations":11461,"days":2922,"monthLabels":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"measures":[{"key":"TxSoil0cm","zh":"地溫 0 公分","en":"Soil temperature at 0 cm","unit":"°C","agg":"mean","slot":1,"overall":{"n":2846,"min":4.0,"q1":16.9,"median":21.2,"q3":25.6,"max":29.7,"mean":20.87,"sd":4.99,"p05":12.6,"p95":27.4},"boxBasis":"all observed days","logScale":false,"monthly":[{"month":1,"label":"Jan","days_observed":242,"dry_pct":null,"n":242,"min":4.0,"q1":12.4,"median":14.4,"q3":15.9,"max":19.9,"mean":14.05,"sd":2.87,"p05":8.61,"p95":18.09,"lo_whisker":7.2,"hi_whisker":19.9,"iqr":3.5,"outlier_count":3,"outliers":[4.0,4.9,6.0]},{"month":2,"label":"Feb","days_observed":225,"dry_pct":null,"n":225,"min":5.0,"q1":13.4,"median":15.0,"q3":16.7,"max":20.3,"mean":14.9,"sd":2.79,"p05":9.8,"p95":19.1,"lo_whisker":8.8,"hi_whisker":20.3,"iqr":3.3,"outlier_count":6,"outliers":[5.0,6.1,6.2,6.9,8.3,8.3]},{"month":3,"label":"Mar","days_observed":240,"dry_pct":null,"n":240,"min":9.5,"q1":15.1,"median":17.3,"q3":19.1,"max":22.6,"mean":17.12,"sd":2.75,"p05":12.79,"p95":21.5,"lo_whisker":9.5,"hi_whisker":22.6,"iqr":4.0,"outlier_count":0,"outliers":[]},{"month":4,"label":"Apr","days_observed":238,"dry_pct":null,"n":238,"min":11.9,"q1":17.5,"median":20.2,"q3":21.98,"max":25.3,"mean":19.73,"sd":2.93,"p05":14.65,"p95":23.9,"lo_whisker":11.9,"hi_whisker":25.3,"iqr":4.48,"outlier_count":0,"outliers":[]},{"month":5,"label":"May","days_observed":246,"dry_pct":null,"n":246,"min":16.7,"q1":21.73,"median":23.4,"q3":24.77,"max":27.3,"mean":23.16,"sd":2.22,"p05":19.12,"p95":26.4,"lo_whisker":17.7,"hi_whisker":27.3,"iqr":3.04,"outlier_count":1,"outliers":[16.7]},{"month":6,"label":"Jun","days_observed":212,"dry_pct":null,"n":212,"min":21.3,"q1":24.58,"median":25.8,"q3":26.7,"max":28.2,"mean":25.52,"sd":1.56,"p05":22.6,"p95":27.6,"lo_whisker":21.8,"hi_whisker":28.2,"iqr":2.12,"outlier_count":2,"outliers":[21.3,21.3]},{"month":7,"label":"Jul","days_observed":244,"dry_pct":null,"n":244,"min":22.9,"q1":25.9,"median":26.8,"q3":27.5,"max":29.7,"mean":26.71,"sd":1.18,"p05":24.71,"p95":28.5,"lo_whisker":23.5,"hi_whisker":29.7,"iqr":1.6,"outlier_count":1,"outliers":[22.9]},{"month":8,"label":"Aug","days_observed":240,"dry_pct":null,"n":240,"min":23.1,"q1":26.0,"median":26.7,"q3":27.2,"max":29.2,"mean":26.6,"sd":1.02,"p05":24.7,"p95":28.11,"lo_whisker":24.5,"hi_whisker":28.8,"iqr":1.2,"outlier_count":9,"outliers":[23.1,23.7,23.8,23.8,23.9,23.9,24.0,29.2,29.2]},{"month":9,"label":"Sep","days_observed":238,"dry_pct":null,"n":238,"min":18.6,"q1":24.2,"median":25.6,"q3":26.6,"max":28.2,"mean":25.14,"sd":2.0,"p05":20.48,"p95":27.6,"lo_whisker":21.0,"hi_whisker":28.2,"iqr":2.4,"outlier_count":13,"outliers":[18.6,18.8,19.0,19.4,19.6,20.0,20.0,20.0,20.1,20.2,20.2,20.4,20.5]},{"month":10,"label":"Oct","days_observed":243,"dry_pct":null,"n":243,"min":16.0,"q1":20.5,"median":21.9,"q3":24.25,"max":26.8,"mean":22.15,"sd":2.43,"p05":18.41,"p95":25.9,"lo_whisker":16.0,"hi_whisker":26.8,"iqr":3.75,"outlier_count":0,"outliers":[]},{"month":11,"label":"Nov","days_observed":237,"dry_pct":null,"n":237,"min":14.2,"q1":17.9,"median":19.5,"q3":21.3,"max":23.5,"mean":19.46,"sd":2.13,"p05":15.78,"p95":22.6,"lo_whisker":14.2,"hi_whisker":23.5,"iqr":3.4,"outlier_count":0,"outliers":[]},{"month":12,"label":"Dec","days_observed":241,"dry_pct":null,"n":241,"min":7.7,"q1":14.5,"median":16.3,"q3":17.6,"max":21.3,"mean":15.93,"sd":2.32,"p05":12.1,"p95":19.6,"lo_whisker":10.2,"hi_whisker":21.3,"iqr":3.1,"outlier_count":1,"outliers":[7.7]}],"frequency":{"mode":"bins","bins":[{"label":"4","lo":4.0,"hi":6.0,"count":3,"pct":0.11},{"label":"6","lo":6.0,"hi":8.0,"count":8,"pct":0.28},{"label":"8","lo":8.0,"hi":10.0,"count":27,"pct":0.95},{"label":"10","lo":10.0,"hi":12.0,"count":62,"pct":2.18},{"label":"12","lo":12.0,"hi":14.0,"count":160,"pct":5.62},{"label":"14","lo":14.0,"hi":16.0,"count":299,"pct":10.51},{"label":"16","lo":16.0,"hi":18.0,"count":349,"pct":12.26},{"label":"18","lo":18.0,"hi":20.0,"count":310,"pct":10.89},{"label":"20","lo":20.0,"hi":22.0,"count":326,"pct":11.45},{"label":"22","lo":22.0,"hi":24.0,"count":290,"pct":10.19},{"label":"24","lo":24.0,"hi":26.0,"count":407,"pct":14.3},{"label":"26","lo":26.0,"hi":28.0,"count":549,"pct":19.29},{"label":"28","lo":28.0,"hi":30.0,"count":56,"pct":1.97}],"width":2.0,"note":"Equal-width bins of 2 °C."},"heatmap":{"rows":[{"year":2018,"cells":[{"month":1,"value":13.5,"coverage":0.935},{"month":2,"value":12.55,"coverage":1.0},{"month":3,"value":null,"coverage":0.742},{"month":4,"value":19.78,"coverage":0.967},{"month":5,"value":24.31,"coverage":1.0},{"month":6,"value":null,"coverage":0.7},{"month":7,"value":26.16,"coverage":0.968},{"month":8,"value":26.06,"coverage":0.935},{"month":9,"value":24.39,"coverage":0.967},{"month":10,"value":19.84,"coverage":0.935},{"month":11,"value":19.25,"coverage":1.0},{"month":12,"value":16.56,"coverage":0.968}]},{"year":2019,"cells":[{"month":1,"value":null,"coverage":0.871},{"month":2,"value":16.09,"coverage":0.964},{"month":3,"value":16.55,"coverage":1.0},{"month":4,"value":20.68,"coverage":0.967},{"month":5,"value":21.73,"coverage":0.935},{"month":6,"value":24.91,"coverage":0.967},{"month":7,"value":26.32,"coverage":1.0},{"month":8,"value":26.09,"coverage":0.903},{"month":9,"value":23.24,"coverage":0.967},{"month":10,"value":21.11,"coverage":1.0},{"month":11,"value":17.95,"coverage":1.0},{"month":12,"value":15.38,"coverage":1.0}]},{"year":2020,"cells":[{"month":1,"value":14.37,"coverage":1.0},{"month":2,"value":15.07,"coverage":1.0},{"month":3,"value":17.59,"coverage":1.0},{"month":4,"value":17.26,"coverage":1.0},{"month":5,"value":23.85,"coverage":1.0},{"month":6,"value":26.36,"coverage":1.0},{"month":7,"value":26.18,"coverage":1.0},{"month":8,"value":25.51,"coverage":1.0},{"month":9,"value":23.32,"coverage":1.0},{"month":10,"value":20.21,"coverage":1.0},{"month":11,"value":18.71,"coverage":1.0},{"month":12,"value":14.76,"coverage":0.968}]},{"year":2021,"cells":[{"month":1,"value":11.98,"coverage":1.0},{"month":2,"value":15.39,"coverage":1.0},{"month":3,"value":17.28,"coverage":1.0},{"month":4,"value":19.01,"coverage":1.0},{"month":5,"value":24.53,"coverage":1.0},{"month":6,"value":25.45,"coverage":1.0},{"month":7,"value":26.53,"coverage":0.935},{"month":8,"value":26.73,"coverage":0.903},{"month":9,"value":26.19,"coverage":1.0},{"month":10,"value":23.35,"coverage":1.0},{"month":11,"value":19.43,"coverage":1.0},{"month":12,"value":16.54,"coverage":0.968}]},{"year":2022,"cells":[{"month":1,"value":15.44,"coverage":1.0},{"month":2,"value":14.62,"coverage":1.0},{"month":3,"value":18.15,"coverage":1.0},{"month":4,"value":19.43,"coverage":1.0},{"month":5,"value":21.53,"coverage":1.0},{"month":6,"value":null,"coverage":0.667},{"month":7,"value":26.69,"coverage":1.0},{"month":8,"value":26.64,"coverage":1.0},{"month":9,"value":24.14,"coverage":1.0},{"month":10,"value":21.85,"coverage":1.0},{"month":11,"value":21.07,"coverage":1.0},{"month":12,"value":15.19,"coverage":0.968}]},{"year":2023,"cells":[{"month":1,"value":14.89,"coverage":1.0},{"month":2,"value":15.41,"coverage":1.0},{"month":3,"value":17.3,"coverage":1.0},{"month":4,"value":19.83,"coverage":1.0},{"month":5,"value":23.1,"coverage":1.0},{"month":6,"value":26.05,"coverage":1.0},{"month":7,"value":27.81,"coverage":1.0},{"month":8,"value":27.17,"coverage":1.0},{"month":9,"value":26.46,"coverage":1.0},{"month":10,"value":23.04,"coverage":1.0},{"month":11,"value":19.71,"coverage":1.0},{"month":12,"value":16.64,"coverage":0.968}]},{"year":2024,"cells":[{"month":1,"value":14.02,"coverage":1.0},{"month":2,"value":15.96,"coverage":1.0},{"month":3,"value":16.82,"coverage":1.0},{"month":4,"value":22.21,"coverage":1.0},{"month":5,"value":23.01,"coverage":1.0},{"month":6,"value":25.75,"coverage":1.0},{"month":7,"value":27.32,"coverage":1.0},{"month":8,"value":27.19,"coverage":1.0},{"month":9,"value":26.46,"coverage":1.0},{"month":10,"value":23.67,"coverage":0.968},{"month":11,"value":20.03,"coverage":0.9},{"month":12,"value":15.48,"coverage":0.935}]},{"year":2025,"cells":[{"month":1,"value":13.24,"coverage":1.0},{"month":2,"value":14.12,"coverage":1.0},{"month":3,"value":16.69,"coverage":1.0},{"month":4,"value":19.72,"coverage":1.0},{"month":5,"value":23.16,"coverage":1.0},{"month":6,"value":null,"coverage":0.733},{"month":7,"value":26.66,"coverage":0.968},{"month":8,"value":27.3,"coverage":1.0},{"month":9,"value":26.8,"coverage":1.0},{"month":10,"value":24.19,"coverage":0.935},{"month":11,"value":19.57,"coverage":1.0},{"month":12,"value":16.9,"coverage":1.0}]},{"year":2026,"cells":[{"month":1,"value":13.74,"coverage":1.0},{"month":2,"value":15.87,"coverage":1.0},{"month":3,"value":17.46,"coverage":1.0},{"month":4,"value":21.59,"coverage":1.0},{"month":5,"value":23.64,"coverage":1.0},{"month":6,"value":25.47,"coverage":1.0},{"month":7,"value":null,"coverage":0.871},{"month":8,"value":null,"coverage":0.0},{"month":9,"value":null,"coverage":0.0},{"month":10,"value":null,"coverage":0.0},{"month":11,"value":null,"coverage":0.0},{"month":12,"value":null,"coverage":0.0}]}],"min":11.98,"max":27.81,"edges":[11.98,14.62,17.25,19.89,22.53,25.17,27.81],"agg":"mean"}},{"key":"Precp","zh":"日降水量","en":"Daily precipitation","unit":"mm","agg":"sum","slot":2,"overall":{"n":2865,"min":0.0,"q1":0.0,"median":0.5,"q3":8.0,"max":216.0,"mean":8.8,"sd":20.6,"p05":0.0,"p95":46.5},"boxBasis":"wet days only (≥ 0.1 mm)","logScale":true,"monthly":[{"month":1,"label":"Jan","days_observed":242,"dry_pct":47.1,"n":128,"min":0.5,"q1":1.38,"median":4.0,"q3":11.12,"max":71.5,"mean":9.04,"sd":11.74,"p05":0.5,"p95":31.97,"lo_whisker":0.5,"hi_whisker":25.5,"iqr":9.74,"outlier_count":11,"outliers":[27.0,28.0,29.5,31.0,32.5,35.5,36.0,37.0,49.5,51.0,71.5]},{"month":2,"label":"Feb","days_observed":225,"dry_pct":46.2,"n":121,"min":0.5,"q1":1.5,"median":4.5,"q3":16.5,"max":58.5,"mean":10.66,"sd":12.42,"p05":0.5,"p95":34.0,"lo_whisker":0.5,"hi_whisker":38.5,"iqr":15.0,"outlier_count":3,"outliers":[41.0,53.0,58.5]},{"month":3,"label":"Mar","days_observed":240,"dry_pct":56.2,"n":105,"min":0.5,"q1":1.5,"median":6.0,"q3":17.5,"max":73.0,"mean":11.81,"sd":14.79,"p05":0.5,"p95":40.7,"lo_whisker":0.5,"hi_whisker":41.0,"iqr":16.0,"outlier_count":5,"outliers":[42.0,53.0,55.0,64.0,73.0]},{"month":4,"label":"Apr","days_observed":238,"dry_pct":47.1,"n":126,"min":0.5,"q1":1.0,"median":4.5,"q3":11.0,"max":68.5,"mean":9.51,"sd":13.17,"p05":0.5,"p95":39.25,"lo_whisker":0.5,"hi_whisker":26.0,"iqr":10.0,"outlier_count":12,"outliers":[26.5,26.5,27.5,32.5,38.5,39.5,49.0,50.0,51.0,51.5,54.0,68.5]},{"month":5,"label":"May","days_observed":246,"dry_pct":46.3,"n":132,"min":0.5,"q1":1.5,"median":8.0,"q3":24.62,"max":145.5,"mean":20.33,"sd":29.83,"p05":0.5,"p95":75.72,"lo_whisker":0.5,"hi_whisker":55.5,"iqr":23.12,"outlier_count":12,"outliers":[63.5,63.5,63.5,66.0,75.5,76.0,93.5,127.5,128.0,133.5,141.0,145.5]},{"month":6,"label":"Jun","days_observed":220,"dry_pct":46.8,"n":117,"min":0.5,"q1":3.5,"median":11.0,"q3":26.5,"max":109.5,"mean":18.88,"sd":20.36,"p05":1.0,"p95":53.3,"lo_whisker":0.5,"hi_whisker":55.5,"iqr":23.0,"outlier_count":3,"outliers":[77.0,95.5,109.5]},{"month":7,"label":"Jul","days_observed":247,"dry_pct":57.9,"n":104,"min":0.5,"q1":2.5,"median":10.75,"q3":36.5,"max":209.5,"mean":24.72,"sd":35.49,"p05":0.5,"p95":89.77,"lo_whisker":0.5,"hi_whisker":80.0,"iqr":34.0,"outlier_count":6,"outliers":[91.5,95.0,96.0,105.5,188.5,209.5]},{"month":8,"label":"Aug","days_observed":243,"dry_pct":53.5,"n":113,"min":0.5,"q1":2.5,"median":9.5,"q3":29.0,"max":139.5,"mean":20.71,"sd":26.57,"p05":0.5,"p95":74.6,"lo_whisker":0.5,"hi_whisker":60.5,"iqr":26.5,"outlier_count":9,"outliers":[69.0,69.0,72.0,78.5,99.0,102.0,103.0,110.0,139.5]},{"month":9,"label":"Sep","days_observed":238,"dry_pct":51.7,"n":115,"min":0.5,"q1":3.0,"median":13.0,"q3":44.75,"max":216.0,"mean":32.46,"sd":45.61,"p05":0.5,"p95":141.3,"lo_whisker":0.5,"hi_whisker":102.0,"iqr":41.75,"outlier_count":9,"outliers":[116.0,117.0,139.5,145.5,149.0,158.0,202.0,209.0,216.0]},{"month":10,"label":"Oct","days_observed":243,"dry_pct":40.7,"n":144,"min":0.5,"q1":2.38,"median":8.5,"q3":38.62,"max":175.5,"mean":25.48,"sd":36.18,"p05":0.5,"p95":110.35,"lo_whisker":0.5,"hi_whisker":85.0,"iqr":36.24,"outlier_count":10,"outliers":[109.0,109.5,110.5,111.5,115.5,117.5,138.0,150.5,161.5,175.5]},{"month":11,"label":"Nov","days_observed":237,"dry_pct":40.9,"n":140,"min":0.5,"q1":1.0,"median":5.25,"q3":13.62,"max":86.0,"mean":10.24,"sd":14.07,"p05":0.5,"p95":34.25,"lo_whisker":0.5,"hi_whisker":30.5,"iqr":12.62,"outlier_count":8,"outliers":[34.0,39.0,43.0,55.0,57.5,65.0,65.0,86.0]},{"month":12,"label":"Dec","days_observed":246,"dry_pct":35.4,"n":159,"min":0.5,"q1":2.0,"median":6.5,"q3":14.5,"max":90.5,"mean":10.58,"sd":12.81,"p05":0.5,"p95":35.0,"lo_whisker":0.5,"hi_whisker":28.0,"iqr":12.5,"outlier_count":10,"outliers":[33.5,35.0,35.0,35.5,39.5,42.0,48.5,59.5,66.5,90.5]}],"frequency":{"mode":"classes","bins":[{"label":"<0.1","lo":0.0,"count":1361,"pct":47.5},{"label":"0.1–1","lo":0.1,"count":194,"pct":6.77},{"label":"1–5","lo":1.0,"count":430,"pct":15.01},{"label":"5–10","lo":5.0,"count":240,"pct":8.38},{"label":"10–25","lo":10.0,"count":337,"pct":11.76},{"label":"25–50","lo":25.0,"count":174,"pct":6.07},{"label":"50–100","lo":50.0,"count":96,"pct":3.35},{"label":"≥100","lo":100.0,"count":33,"pct":1.15}],"note":"Rainfall classes, not equal-width bins: the first class is dry days, nearly half the record, which would swamp a linear histogram."},"heatmap":{"rows":[{"year":2018,"cells":[{"month":1,"value":307.5,"coverage":0.935},{"month":2,"value":276.0,"coverage":1.0},{"month":3,"value":null,"coverage":0.742},{"month":4,"value":122.5,"coverage":0.967},{"month":5,"value":89.5,"coverage":1.0},{"month":6,"value":null,"coverage":0.7},{"month":7,"value":292.0,"coverage":0.968},{"month":8,"value":293.0,"coverage":0.935},{"month":9,"value":519.5,"coverage":0.967},{"month":10,"value":396.0,"coverage":0.935},{"month":11,"value":108.0,"coverage":1.0},{"month":12,"value":194.0,"coverage":0.968}]},{"year":2019,"cells":[{"month":1,"value":null,"coverage":0.871},{"month":2,"value":81.5,"coverage":0.964},{"month":3,"value":184.0,"coverage":1.0},{"month":4,"value":140.5,"coverage":0.967},{"month":5,"value":243.0,"coverage":0.935},{"month":6,"value":394.0,"coverage":0.967},{"month":7,"value":240.5,"coverage":1.0},{"month":8,"value":328.5,"coverage":0.903},{"month":9,"value":771.0,"coverage":0.967},{"month":10,"value":142.0,"coverage":1.0},{"month":11,"value":118.0,"coverage":1.0},{"month":12,"value":234.5,"coverage":1.0}]},{"year":2020,"cells":[{"month":1,"value":93.0,"coverage":1.0},{"month":2,"value":52.0,"coverage":1.0},{"month":3,"value":206.5,"coverage":1.0},{"month":4,"value":146.5,"coverage":1.0},{"month":5,"value":500.0,"coverage":1.0},{"month":6,"value":174.5,"coverage":1.0},{"month":7,"value":325.5,"coverage":1.0},{"month":8,"value":297.0,"coverage":1.0},{"month":9,"value":175.0,"coverage":1.0},{"month":10,"value":199.5,"coverage":1.0},{"month":11,"value":185.0,"coverage":1.0},{"month":12,"value":294.5,"coverage":1.0}]},{"year":2021,"cells":[{"month":1,"value":131.5,"coverage":1.0},{"month":2,"value":101.0,"coverage":1.0},{"month":3,"value":89.0,"coverage":1.0},{"month":4,"value":63.0,"coverage":1.0},{"month":5,"value":294.5,"coverage":1.0},{"month":6,"value":289.0,"coverage":1.0},{"month":7,"value":444.5,"coverage":1.0},{"month":8,"value":509.5,"coverage":1.0},{"month":9,"value":264.0,"coverage":1.0},{"month":10,"value":541.0,"coverage":1.0},{"month":11,"value":166.5,"coverage":1.0},{"month":12,"value":119.0,"coverage":1.0}]},{"year":2022,"cells":[{"month":1,"value":166.5,"coverage":1.0},{"month":2,"value":365.5,"coverage":1.0},{"month":3,"value":224.0,"coverage":1.0},{"month":4,"value":136.0,"coverage":1.0},{"month":5,"value":620.5,"coverage":1.0},{"month":6,"value":null,"coverage":0.667},{"month":7,"value":131.5,"coverage":1.0},{"month":8,"value":53.0,"coverage":1.0},{"month":9,"value":909.0,"coverage":1.0},{"month":10,"value":716.5,"coverage":1.0},{"month":11,"value":216.0,"coverage":1.0},{"month":12,"value":343.0,"coverage":1.0}]},{"year":2023,"cells":[{"month":1,"value":110.0,"coverage":1.0},{"month":2,"value":99.0,"coverage":1.0},{"month":3,"value":55.0,"coverage":1.0},{"month":4,"value":156.0,"coverage":1.0},{"month":5,"value":280.5,"coverage":1.0},{"month":6,"value":437.0,"coverage":1.0},{"month":7,"value":233.5,"coverage":1.0},{"month":8,"value":351.0,"coverage":1.0},{"month":9,"value":173.0,"coverage":1.0},{"month":10,"value":378.0,"coverage":1.0},{"month":11,"value":100.0,"coverage":1.0},{"month":12,"value":201.5,"coverage":0.968}]},{"year":2024,"cells":[{"month":1,"value":131.5,"coverage":1.0},{"month":2,"value":103.0,"coverage":1.0},{"month":3,"value":128.0,"coverage":1.0},{"month":4,"value":218.5,"coverage":1.0},{"month":5,"value":230.5,"coverage":1.0},{"month":6,"value":427.5,"coverage":1.0},{"month":7,"value":516.0,"coverage":1.0},{"month":8,"value":261.5,"coverage":1.0},{"month":9,"value":660.0,"coverage":1.0},{"month":10,"value":495.0,"coverage":0.968},{"month":11,"value":198.5,"coverage":0.9},{"month":12,"value":111.0,"coverage":1.0}]},{"year":2025,"cells":[{"month":1,"value":98.5,"coverage":1.0},{"month":2,"value":211.5,"coverage":1.0},{"month":3,"value":297.0,"coverage":1.0},{"month":4,"value":215.5,"coverage":1.0},{"month":5,"value":425.0,"coverage":1.0},{"month":6,"value":142.5,"coverage":1.0},{"month":7,"value":387.5,"coverage":1.0},{"month":8,"value":247.0,"coverage":1.0},{"month":9,"value":261.5,"coverage":1.0},{"month":10,"value":801.5,"coverage":0.935},{"month":11,"value":341.0,"coverage":1.0},{"month":12,"value":185.0,"coverage":1.0}]},{"year":2026,"cells":[{"month":1,"value":186.5,"coverage":1.0},{"month":2,"value":82.5,"coverage":1.0},{"month":3,"value":111.5,"coverage":1.0},{"month":4,"value":250.5,"coverage":1.0},{"month":5,"value":227.0,"coverage":1.0},{"month":6,"value":817.0,"coverage":1.0},{"month":7,"value":null,"coverage":0.871},{"month":8,"value":null,"coverage":0.0},{"month":9,"value":null,"coverage":0.0},{"month":10,"value":null,"coverage":0.0},{"month":11,"value":null,"coverage":0.0},{"month":12,"value":null,"coverage":0.0}]}],"min":52.0,"max":909.0,"edges":[52.0,194.83,337.67,480.5,623.33,766.17,909.0],"agg":"total"}},{"key":"SunShine","zh":"日照時數","en":"Sunshine duration","unit":"hour","agg":"mean","slot":3,"overall":{"n":2875,"min":0.0,"q1":3.95,"median":7.7,"q3":9.4,"max":11.7,"mean":6.63,"sd":3.41,"p05":0.1,"p95":10.8},"boxBasis":"all observed days","logScale":false,"monthly":[{"month":1,"label":"Jan","days_observed":242,"dry_pct":null,"n":242,"min":0.0,"q1":1.42,"median":4.8,"q3":7.3,"max":8.8,"mean":4.41,"sd":3.06,"p05":0.0,"p95":8.4,"lo_whisker":0.0,"hi_whisker":8.8,"iqr":5.88,"outlier_count":0,"outliers":[]},{"month":2,"label":"Feb","days_observed":225,"dry_pct":null,"n":225,"min":0.0,"q1":1.2,"median":5.5,"q3":8.0,"max":9.4,"mean":4.82,"sd":3.39,"p05":0.0,"p95":9.1,"lo_whisker":0.0,"hi_whisker":9.4,"iqr":6.8,"outlier_count":0,"outliers":[]},{"month":3,"label":"Mar","days_observed":240,"dry_pct":null,"n":240,"min":0.0,"q1":3.55,"median":7.25,"q3":9.2,"max":10.1,"mean":6.22,"sd":3.32,"p05":0.3,"p95":9.8,"lo_whisker":0.0,"hi_whisker":10.1,"iqr":5.65,"outlier_count":0,"outliers":[]},{"month":4,"label":"Apr","days_observed":238,"dry_pct":null,"n":238,"min":0.0,"q1":4.72,"median":8.05,"q3":9.8,"max":11.2,"mean":6.94,"sd":3.27,"p05":0.67,"p95":10.5,"lo_whisker":0.0,"hi_whisker":11.2,"iqr":5.08,"outlier_count":0,"outliers":[]},{"month":5,"label":"May","days_observed":246,"dry_pct":null,"n":246,"min":0.0,"q1":6.0,"median":9.2,"q3":10.17,"max":11.5,"mean":7.86,"sd":3.07,"p05":1.55,"p95":11.0,"lo_whisker":0.0,"hi_whisker":11.5,"iqr":4.17,"outlier_count":0,"outliers":[]},{"month":6,"label":"Jun","days_observed":230,"dry_pct":null,"n":230,"min":2.0,"q1":7.6,"median":9.3,"q3":10.5,"max":11.7,"mean":8.74,"sd":2.22,"p05":4.04,"p95":11.3,"lo_whisker":3.6,"hi_whisker":11.7,"iqr":2.9,"outlier_count":8,"outliers":[2.0,2.0,2.4,2.6,2.7,2.8,3.0,3.2]},{"month":7,"label":"Jul","days_observed":247,"dry_pct":null,"n":247,"min":0.9,"q1":8.4,"median":9.9,"q3":10.8,"max":11.7,"mean":9.32,"sd":1.96,"p05":5.29,"p95":11.2,"lo_whisker":4.9,"hi_whisker":11.7,"iqr":2.4,"outlier_count":9,"outliers":[0.9,2.2,2.5,2.6,3.3,3.6,3.7,3.8,4.4]},{"month":8,"label":"Aug","days_observed":243,"dry_pct":null,"n":243,"min":1.0,"q1":8.35,"median":9.5,"q3":10.3,"max":11.2,"mean":9.05,"sd":1.82,"p05":5.41,"p95":11.0,"lo_whisker":5.5,"hi_whisker":11.2,"iqr":1.95,"outlier_count":13,"outliers":[1.0,2.1,2.2,3.0,3.0,4.5,4.6,4.7,4.7,5.0,5.1,5.1,5.4]},{"month":9,"label":"Sep","days_observed":238,"dry_pct":null,"n":238,"min":0.0,"q1":7.03,"median":8.9,"q3":9.5,"max":10.3,"mean":7.74,"sd":2.69,"p05":1.2,"p95":10.1,"lo_whisker":3.4,"hi_whisker":10.3,"iqr":2.47,"outlier_count":22,"outliers":[0.0,0.0,0.0,0.0,0.3,0.4,0.6,0.6,0.7,0.9,0.9,1.2,1.2,1.3,1.4,1.5,1.9,2.2,2.2,2.4,2.4,3.2]},{"month":10,"label":"Oct","days_observed":243,"dry_pct":null,"n":243,"min":0.0,"q1":2.7,"median":6.5,"q3":8.65,"max":9.7,"mean":5.61,"sd":3.23,"p05":0.11,"p95":9.3,"lo_whisker":0.0,"hi_whisker":9.7,"iqr":5.95,"outlier_count":0,"outliers":[]},{"month":11,"label":"Nov","days_observed":237,"dry_pct":null,"n":237,"min":0.0,"q1":2.1,"median":5.8,"q3":7.9,"max":8.9,"mean":5.01,"sd":3.01,"p05":0.1,"p95":8.6,"lo_whisker":0.0,"hi_whisker":8.9,"iqr":5.8,"outlier_count":0,"outliers":[]},{"month":12,"label":"Dec","days_observed":246,"dry_pct":null,"n":246,"min":0.0,"q1":0.53,"median":3.5,"q3":6.8,"max":8.4,"mean":3.78,"sd":2.99,"p05":0.0,"p95":8.1,"lo_whisker":0.0,"hi_whisker":8.4,"iqr":6.27,"outlier_count":0,"outliers":[]}],"frequency":{"mode":"bins","bins":[{"label":"0","lo":0.0,"hi":1.0,"count":313,"pct":10.89},{"label":"1","lo":1.0,"hi":2.0,"count":132,"pct":4.59},{"label":"2","lo":2.0,"hi":3.0,"count":133,"pct":4.63},{"label":"3","lo":3.0,"hi":4.0,"count":141,"pct":4.9},{"label":"4","lo":4.0,"hi":5.0,"count":129,"pct":4.49},{"label":"5","lo":5.0,"hi":6.0,"count":149,"pct":5.18},{"label":"6","lo":6.0,"hi":7.0,"count":226,"pct":7.86},{"label":"7","lo":7.0,"hi":8.0,"count":297,"pct":10.33},{"label":"8","lo":8.0,"hi":9.0,"count":426,"pct":14.82},{"label":"9","lo":9.0,"hi":10.0,"count":479,"pct":16.66},{"label":"10","lo":10.0,"hi":11.0,"count":335,"pct":11.65},{"label":"11","lo":11.0,"hi":12.0,"count":115,"pct":4.0}],"width":1.0,"note":"Equal-width bins of 1 hour."},"heatmap":{"rows":[{"year":2018,"cells":[{"month":1,"value":4.08,"coverage":0.935},{"month":2,"value":3.68,"coverage":1.0},{"month":3,"value":null,"coverage":0.742},{"month":4,"value":7.9,"coverage":0.967},{"month":5,"value":9.37,"coverage":1.0},{"month":6,"value":null,"coverage":0.7},{"month":7,"value":9.51,"coverage":0.968},{"month":8,"value":8.73,"coverage":0.935},{"month":9,"value":7.31,"coverage":0.967},{"month":10,"value":5.37,"coverage":0.935},{"month":11,"value":5.07,"coverage":1.0},{"month":12,"value":4.4,"coverage":0.968}]},{"year":2019,"cells":[{"month":1,"value":null,"coverage":0.871},{"month":2,"value":4.31,"coverage":0.964},{"month":3,"value":5.2,"coverage":1.0},{"month":4,"value":7.19,"coverage":0.967},{"month":5,"value":6.91,"coverage":0.935},{"month":6,"value":8.19,"coverage":0.967},{"month":7,"value":9.35,"coverage":1.0},{"month":8,"value":9.19,"coverage":0.903},{"month":9,"value":6.73,"coverage":0.967},{"month":10,"value":6.51,"coverage":1.0},{"month":11,"value":4.92,"coverage":1.0},{"month":12,"value":4.51,"coverage":1.0}]},{"year":2020,"cells":[{"month":1,"value":5.05,"coverage":1.0},{"month":2,"value":5.48,"coverage":1.0},{"month":3,"value":6.02,"coverage":1.0},{"month":4,"value":5.31,"coverage":1.0},{"month":5,"value":7.24,"coverage":1.0},{"month":6,"value":9.4,"coverage":1.0},{"month":7,"value":9.36,"coverage":1.0},{"month":8,"value":9.4,"coverage":1.0},{"month":9,"value":7.38,"coverage":1.0},{"month":10,"value":4.75,"coverage":1.0},{"month":11,"value":4.88,"coverage":1.0},{"month":12,"value":2.7,"coverage":1.0}]},{"year":2021,"cells":[{"month":1,"value":4.79,"coverage":1.0},{"month":2,"value":6.53,"coverage":1.0},{"month":3,"value":6.08,"coverage":1.0},{"month":4,"value":7.34,"coverage":1.0},{"month":5,"value":8.71,"coverage":1.0},{"month":6,"value":9.1,"coverage":1.0},{"month":7,"value":9.37,"coverage":1.0},{"month":8,"value":8.23,"coverage":1.0},{"month":9,"value":8.77,"coverage":1.0},{"month":10,"value":5.8,"coverage":1.0},{"month":11,"value":4.3,"coverage":1.0},{"month":12,"value":4.31,"coverage":1.0}]},{"year":2022,"cells":[{"month":1,"value":3.23,"coverage":1.0},{"month":2,"value":3.59,"coverage":1.0},{"month":3,"value":6.57,"coverage":1.0},{"month":4,"value":6.89,"coverage":1.0},{"month":5,"value":6.38,"coverage":1.0},{"month":6,"value":8.47,"coverage":1.0},{"month":7,"value":9.88,"coverage":1.0},{"month":8,"value":9.82,"coverage":1.0},{"month":9,"value":6.61,"coverage":1.0},{"month":10,"value":4.33,"coverage":1.0},{"month":11,"value":5.54,"coverage":1.0},{"month":12,"value":3.03,"coverage":1.0}]},{"year":2023,"cells":[{"month":1,"value":4.35,"coverage":1.0},{"month":2,"value":4.78,"coverage":1.0},{"month":3,"value":6.67,"coverage":1.0},{"month":4,"value":6.46,"coverage":1.0},{"month":5,"value":8.19,"coverage":1.0},{"month":6,"value":8.67,"coverage":1.0},{"month":7,"value":9.39,"coverage":1.0},{"month":8,"value":8.6,"coverage":1.0},{"month":9,"value":8.47,"coverage":1.0},{"month":10,"value":5.89,"coverage":1.0},{"month":11,"value":6.18,"coverage":1.0},{"month":12,"value":3.9,"coverage":0.968}]},{"year":2024,"cells":[{"month":1,"value":4.72,"coverage":1.0},{"month":2,"value":5.44,"coverage":1.0},{"month":3,"value":6.15,"coverage":1.0},{"month":4,"value":7.22,"coverage":1.0},{"month":5,"value":8.06,"coverage":1.0},{"month":6,"value":8.25,"coverage":1.0},{"month":7,"value":9.09,"coverage":1.0},{"month":8,"value":9.0,"coverage":1.0},{"month":9,"value":8.15,"coverage":1.0},{"month":10,"value":5.91,"coverage":0.968},{"month":11,"value":4.14,"coverage":0.9},{"month":12,"value":3.23,"coverage":1.0}]},{"year":2025,"cells":[{"month":1,"value":4.74,"coverage":1.0},{"month":2,"value":4.69,"coverage":1.0},{"month":3,"value":5.75,"coverage":1.0},{"month":4,"value":7.27,"coverage":1.0},{"month":5,"value":7.94,"coverage":1.0},{"month":6,"value":9.18,"coverage":1.0},{"month":7,"value":8.64,"coverage":1.0},{"month":8,"value":9.42,"coverage":1.0},{"month":9,"value":8.45,"coverage":1.0},{"month":10,"value":6.4,"coverage":0.935},{"month":11,"value":5.01,"coverage":1.0},{"month":12,"value":4.21,"coverage":1.0}]},{"year":2026,"cells":[{"month":1,"value":4.93,"coverage":1.0},{"month":2,"value":5.69,"coverage":1.0},{"month":3,"value":5.87,"coverage":1.0},{"month":4,"value":7.3,"coverage":1.0},{"month":5,"value":8.18,"coverage":1.0},{"month":6,"value":7.35,"coverage":1.0},{"month":7,"value":null,"coverage":0.871},{"month":8,"value":null,"coverage":0.0},{"month":9,"value":null,"coverage":0.0},{"month":10,"value":null,"coverage":0.0},{"month":11,"value":null,"coverage":0.0},{"month":12,"value":null,"coverage":0.0}]}],"min":2.7,"max":9.88,"edges":[2.7,3.89,5.09,6.29,7.49,8.69,9.88],"agg":"mean"}},{"key":"WS","zh":"風速","en":"Wind speed","unit":"m/s","agg":"mean","slot":4,"overall":{"n":2875,"min":0.2,"q1":1.0,"median":1.2,"q3":1.5,"max":3.8,"mean":1.25,"sd":0.42,"p05":0.7,"p95":2.0},"boxBasis":"all observed days","logScale":false,"monthly":[{"month":1,"label":"Jan","days_observed":242,"dry_pct":null,"n":242,"min":0.2,"q1":1.0,"median":1.2,"q3":1.5,"max":3.2,"mean":1.27,"sd":0.42,"p05":0.7,"p95":1.9,"lo_whisker":0.4,"hi_whisker":2.2,"iqr":0.5,"outlier_count":5,"outliers":[0.2,2.5,2.6,2.8,3.2]},{"month":2,"label":"Feb","days_observed":225,"dry_pct":null,"n":225,"min":0.3,"q1":1.0,"median":1.3,"q3":1.5,"max":2.6,"mean":1.3,"sd":0.39,"p05":0.7,"p95":1.98,"lo_whisker":0.3,"hi_whisker":2.2,"iqr":0.5,"outlier_count":4,"outliers":[2.3,2.3,2.4,2.6]},{"month":3,"label":"Mar","days_observed":240,"dry_pct":null,"n":240,"min":0.3,"q1":1.0,"median":1.2,"q3":1.42,"max":2.7,"mean":1.25,"sd":0.4,"p05":0.6,"p95":1.9,"lo_whisker":0.4,"hi_whisker":2.0,"iqr":0.42,"outlier_count":11,"outliers":[0.3,2.1,2.2,2.2,2.2,2.3,2.3,2.3,2.3,2.5,2.7]},{"month":4,"label":"Apr","days_observed":238,"dry_pct":null,"n":238,"min":0.4,"q1":1.0,"median":1.2,"q3":1.4,"max":2.3,"mean":1.18,"sd":0.36,"p05":0.6,"p95":1.8,"lo_whisker":0.5,"hi_whisker":1.9,"iqr":0.4,"outlier_count":12,"outliers":[0.4,0.4,0.4,2.0,2.0,2.0,2.0,2.1,2.1,2.1,2.1,2.3]},{"month":5,"label":"May","days_observed":246,"dry_pct":null,"n":246,"min":0.5,"q1":0.9,"median":1.1,"q3":1.3,"max":2.2,"mean":1.12,"sd":0.3,"p05":0.7,"p95":1.6,"lo_whisker":0.5,"hi_whisker":1.9,"iqr":0.4,"outlier_count":1,"outliers":[2.2]},{"month":6,"label":"Jun","days_observed":230,"dry_pct":null,"n":230,"min":0.4,"q1":0.9,"median":1.1,"q3":1.3,"max":2.2,"mean":1.12,"sd":0.33,"p05":0.7,"p95":1.7,"lo_whisker":0.4,"hi_whisker":1.9,"iqr":0.4,"outlier_count":3,"outliers":[2.1,2.2,2.2]},{"month":7,"label":"Jul","days_observed":247,"dry_pct":null,"n":247,"min":0.5,"q1":1.0,"median":1.2,"q3":1.5,"max":3.8,"mean":1.3,"sd":0.48,"p05":0.7,"p95":2.1,"lo_whisker":0.5,"hi_whisker":2.2,"iqr":0.5,"outlier_count":9,"outliers":[2.4,2.5,2.7,2.7,2.9,3.0,3.3,3.5,3.8]},{"month":8,"label":"Aug","days_observed":243,"dry_pct":null,"n":243,"min":0.3,"q1":1.0,"median":1.2,"q3":1.4,"max":3.1,"mean":1.2,"sd":0.37,"p05":0.61,"p95":1.79,"lo_whisker":0.5,"hi_whisker":1.9,"iqr":0.4,"outlier_count":8,"outliers":[0.3,2.0,2.1,2.2,2.2,2.2,3.0,3.1]},{"month":9,"label":"Sep","days_observed":238,"dry_pct":null,"n":238,"min":0.2,"q1":1.1,"median":1.2,"q3":1.5,"max":3.2,"mean":1.33,"sd":0.5,"p05":0.7,"p95":2.5,"lo_whisker":0.6,"hi_whisker":2.0,"iqr":0.4,"outlier_count":26,"outliers":[0.2,0.4,0.5,0.5,0.5,2.1,2.1,2.1,2.2,2.3,2.3,2.3,2.4,2.5,2.5,2.5,2.7,2.7,2.7,2.8,2.8,2.9,3.1,3.1,3.1,3.2]},{"month":10,"label":"Oct","days_observed":243,"dry_pct":null,"n":243,"min":0.4,"q1":1.0,"median":1.3,"q3":1.6,"max":3.8,"mean":1.34,"sd":0.53,"p05":0.7,"p95":2.39,"lo_whisker":0.4,"hi_whisker":2.5,"iqr":0.6,"outlier_count":7,"outliers":[2.6,2.7,2.9,3.0,3.0,3.7,3.8]},{"month":11,"label":"Nov","days_observed":237,"dry_pct":null,"n":237,"min":0.2,"q1":1.0,"median":1.3,"q3":1.5,"max":2.4,"mean":1.27,"sd":0.37,"p05":0.7,"p95":2.0,"lo_whisker":0.5,"hi_whisker":2.2,"iqr":0.5,"outlier_count":3,"outliers":[0.2,2.3,2.4]},{"month":12,"label":"Dec","days_observed":246,"dry_pct":null,"n":246,"min":0.2,"q1":1.0,"median":1.2,"q3":1.6,"max":3.3,"mean":1.29,"sd":0.48,"p05":0.6,"p95":2.18,"lo_whisker":0.2,"hi_whisker":2.5,"iqr":0.6,"outlier_count":3,"outliers":[2.6,3.2,3.3]}],"frequency":{"mode":"bins","bins":[{"label":"0.00","lo":0.0,"hi":0.25,"count":4,"pct":0.14},{"label":"0.25","lo":0.25,"hi":0.5,"count":17,"pct":0.59},{"label":"0.50","lo":0.5,"hi":0.75,"count":229,"pct":7.97},{"label":"0.75","lo":0.75,"hi":1.0,"count":402,"pct":13.98},{"label":"1.00","lo":1.0,"hi":1.25,"count":932,"pct":32.42},{"label":"1.25","lo":1.25,"hi":1.5,"count":563,"pct":19.58},{"label":"1.50","lo":1.5,"hi":1.75,"count":456,"pct":15.86},{"label":"1.75","lo":1.75,"hi":2.0,"count":113,"pct":3.93},{"label":"2.00","lo":2.0,"hi":2.25,"count":90,"pct":3.13},{"label":"2.25","lo":2.25,"hi":2.5,"count":23,"pct":0.8},{"label":"2.50","lo":2.5,"hi":2.75,"count":23,"pct":0.8},{"label":"2.75","lo":2.75,"hi":3.0,"count":6,"pct":0.21},{"label":"3.00","lo":3.0,"hi":3.25,"count":11,"pct":0.38},{"label":"3.25","lo":3.25,"hi":3.5,"count":2,"pct":0.07},{"label":"3.50","lo":3.5,"hi":3.75,"count":2,"pct":0.07},{"label":"3.75","lo":3.75,"hi":4.0,"count":2,"pct":0.07}],"width":0.25,"note":"Equal-width bins of 0.25 m/s."},"heatmap":{"rows":[{"year":2018,"cells":[{"month":1,"value":1.47,"coverage":0.935},{"month":2,"value":1.44,"coverage":1.0},{"month":3,"value":null,"coverage":0.742},{"month":4,"value":1.46,"coverage":0.967},{"month":5,"value":1.33,"coverage":1.0},{"month":6,"value":null,"coverage":0.7},{"month":7,"value":1.48,"coverage":0.968},{"month":8,"value":1.19,"coverage":0.935},{"month":9,"value":1.62,"coverage":0.967},{"month":10,"value":1.35,"coverage":0.935},{"month":11,"value":1.25,"coverage":1.0},{"month":12,"value":1.47,"coverage":0.968}]},{"year":2019,"cells":[{"month":1,"value":null,"coverage":0.871},{"month":2,"value":1.14,"coverage":0.964},{"month":3,"value":1.1,"coverage":1.0},{"month":4,"value":0.88,"coverage":0.967},{"month":5,"value":1.09,"coverage":0.935},{"month":6,"value":0.98,"coverage":0.967},{"month":7,"value":1.14,"coverage":1.0},{"month":8,"value":1.19,"coverage":0.903},{"month":9,"value":1.18,"coverage":0.967},{"month":10,"value":0.91,"coverage":1.0},{"month":11,"value":1.09,"coverage":1.0},{"month":12,"value":1.01,"coverage":1.0}]},{"year":2020,"cells":[{"month":1,"value":0.96,"coverage":1.0},{"month":2,"value":1.11,"coverage":1.0},{"month":3,"value":0.98,"coverage":1.0},{"month":4,"value":1.07,"coverage":1.0},{"month":5,"value":0.98,"coverage":1.0},{"month":6,"value":1.1,"coverage":1.0},{"month":7,"value":1.36,"coverage":1.0},{"month":8,"value":1.27,"coverage":1.0},{"month":9,"value":1.18,"coverage":1.0},{"month":10,"value":1.32,"coverage":1.0},{"month":11,"value":1.46,"coverage":1.0},{"month":12,"value":1.24,"coverage":1.0}]},{"year":2021,"cells":[{"month":1,"value":1.33,"coverage":1.0},{"month":2,"value":1.41,"coverage":1.0},{"month":3,"value":1.21,"coverage":1.0},{"month":4,"value":1.37,"coverage":1.0},{"month":5,"value":1.14,"coverage":1.0},{"month":6,"value":1.0,"coverage":1.0},{"month":7,"value":1.48,"coverage":1.0},{"month":8,"value":1.19,"coverage":1.0},{"month":9,"value":1.29,"coverage":1.0},{"month":10,"value":1.55,"coverage":1.0},{"month":11,"value":1.32,"coverage":1.0},{"month":12,"value":1.34,"coverage":1.0}]},{"year":2022,"cells":[{"month":1,"value":1.17,"coverage":1.0},{"month":2,"value":1.33,"coverage":1.0},{"month":3,"value":1.37,"coverage":1.0},{"month":4,"value":1.28,"coverage":1.0},{"month":5,"value":0.99,"coverage":1.0},{"month":6,"value":1.19,"coverage":1.0},{"month":7,"value":1.1,"coverage":1.0},{"month":8,"value":1.2,"coverage":1.0},{"month":9,"value":1.56,"coverage":1.0},{"month":10,"value":1.5,"coverage":1.0},{"month":11,"value":1.14,"coverage":1.0},{"month":12,"value":1.49,"coverage":1.0}]},{"year":2023,"cells":[{"month":1,"value":1.39,"coverage":1.0},{"month":2,"value":1.39,"coverage":1.0},{"month":3,"value":1.27,"coverage":1.0},{"month":4,"value":1.26,"coverage":1.0},{"month":5,"value":1.16,"coverage":1.0},{"month":6,"value":1.14,"coverage":1.0},{"month":7,"value":1.32,"coverage":1.0},{"month":8,"value":1.13,"coverage":1.0},{"month":9,"value":1.26,"coverage":1.0},{"month":10,"value":1.25,"coverage":1.0},{"month":11,"value":1.32,"coverage":1.0},{"month":12,"value":1.28,"coverage":0.968}]},{"year":2024,"cells":[{"month":1,"value":1.23,"coverage":1.0},{"month":2,"value":1.32,"coverage":1.0},{"month":3,"value":1.32,"coverage":1.0},{"month":4,"value":1.0,"coverage":1.0},{"month":5,"value":1.17,"coverage":1.0},{"month":6,"value":1.06,"coverage":1.0},{"month":7,"value":1.31,"coverage":1.0},{"month":8,"value":1.06,"coverage":1.0},{"month":9,"value":1.23,"coverage":1.0},{"month":10,"value":1.41,"coverage":0.968},{"month":11,"value":1.28,"coverage":0.9},{"month":12,"value":1.34,"coverage":1.0}]},{"year":2025,"cells":[{"month":1,"value":1.31,"coverage":1.0},{"month":2,"value":1.26,"coverage":1.0},{"month":3,"value":1.29,"coverage":1.0},{"month":4,"value":1.14,"coverage":1.0},{"month":5,"value":1.13,"coverage":1.0},{"month":6,"value":1.19,"coverage":1.0},{"month":7,"value":1.19,"coverage":1.0},{"month":8,"value":1.32,"coverage":1.0},{"month":9,"value":1.37,"coverage":1.0},{"month":10,"value":1.42,"coverage":0.935},{"month":11,"value":1.31,"coverage":1.0},{"month":12,"value":1.15,"coverage":1.0}]},{"year":2026,"cells":[{"month":1,"value":1.28,"coverage":1.0},{"month":2,"value":1.24,"coverage":1.0},{"month":3,"value":1.11,"coverage":1.0},{"month":4,"value":1.1,"coverage":1.0},{"month":5,"value":1.14,"coverage":1.0},{"month":6,"value":1.04,"coverage":1.0},{"month":7,"value":null,"coverage":0.871},{"month":8,"value":null,"coverage":0.0},{"month":9,"value":null,"coverage":0.0},{"month":10,"value":null,"coverage":0.0},{"month":11,"value":null,"coverage":0.0},{"month":12,"value":null,"coverage":0.0}]}],"min":0.88,"max":1.62,"edges":[0.88,1.0,1.13,1.25,1.37,1.5,1.62],"agg":"mean"}}]}</script>
+
+<script>
+(function () {
+  "use strict";
+
+  const P = JSON.parse(document.getElementById("payload").textContent);
+  const HUE = { 1: "var(--m1)", 2: "var(--m2)", 3: "var(--m3)", 4: "var(--m4)" };
+  const SVG = "http://www.w3.org/2000/svg";
+
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt = (v, d) => (v === null || v === undefined || isNaN(v))
+    ? "–" : v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+  const dec = (m) => (m.unit === "mm" ? 1 : m.unit === "m/s" ? 2 : 1);
+
+  const el = (name, attrs, text) => {
+    const node = document.createElementNS(SVG, name);
+    for (const k in attrs) node.setAttribute(k, attrs[k]);
+    if (text !== undefined) node.textContent = text;
+    return node;
+  };
+
+  function niceStep(range, target) {
+    if (range <= 0) return 1;
+    const raw = range / target;
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const n = raw / mag;
+    return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * mag;
+  }
+
+  function scaleY(values, zeroBased) {
+    const clean = values.filter((v) => v !== null && !isNaN(v));
+    if (!clean.length) return { lo: 0, hi: 1, ticks: [0, 1], decimals: 0 };
+    const min = Math.min(...clean), max = Math.max(...clean);
+    // Snapping to a nice step supplies the padding; adding more on top of it
+    // pushes the axis a whole step further out and wastes the plot.
+    const rawLo = zeroBased ? 0 : min;
+    const rawHi = max || 1;
+    let best = null;
+    for (const target of [4, 5, 6]) {
+      const step = niceStep(rawHi - rawLo || rawHi, target);
+      const lo = zeroBased ? 0 : Math.floor(rawLo / step) * step;
+      const hi = Math.ceil((rawHi + step * 0.02) / step) * step;
+      if (!best || hi - lo < best.hi - best.lo) best = { lo, hi, step };
+    }
+    const ticks = [];
+    for (let t = best.lo; t <= best.hi + best.step * 1e-9; t += best.step) ticks.push(Number(t.toFixed(10)));
+    return { lo: best.lo, hi: best.hi, ticks, decimals: Math.min(2, Math.max(0, Math.ceil(-Math.log10(best.step)))) };
+  }
+
+  /* Daily rainfall spans three orders of magnitude, so its boxes are unreadable
+     on a linear axis: the typhoon outliers set the scale and every box collapses
+     onto the baseline. Decade ticks are the standard treatment. */
+  function scaleLog(values) {
+    const clean = values.filter((v) => v !== null && !isNaN(v) && v > 0);
+    if (!clean.length) return { lo: 0.1, hi: 100, ticks: [0.1, 1, 10, 100], log: true, decimals: 1 };
+    const lo = Math.pow(10, Math.floor(Math.log10(Math.min(...clean))));
+    const hi = Math.pow(10, Math.ceil(Math.log10(Math.max(...clean))));
+    const ticks = [];
+    for (let e = Math.log10(lo); e <= Math.log10(hi) + 1e-9; e++) ticks.push(Math.pow(10, e));
+    return { lo, hi, ticks, log: true, decimals: 1 };
+  }
+
+  const project = (ys, box) => (v) => {
+    if (ys.log) {
+      const value = Math.max(v, ys.lo);
+      const frac = (Math.log10(value) - Math.log10(ys.lo)) / (Math.log10(ys.hi) - Math.log10(ys.lo));
+      return box.y1 - frac * (box.y1 - box.y0);
+    }
+    return box.y1 - ((v - ys.lo) / (ys.hi - ys.lo)) * (box.y1 - box.y0);
+  };
+
+  function grid(svg, box, ys) {
+    const Y = project(ys, box);
+    ys.ticks.forEach((t) => {
+      const y = Y(t);
+      svg.appendChild(el("line", {
+        x1: box.x0, x2: box.x1, y1: y, y2: y,
+        stroke: css("--rule"), "stroke-width": 1, "shape-rendering": "crispEdges",
+      }));
+      svg.appendChild(el("text", {
+        x: box.x0 - 8, y: y + 3.5, "text-anchor": "end",
+        fill: css("--ink-3"), "font-size": 10, "font-family": css("--mono"),
+      }, fmt(t, ys.log && t < 1 ? 1 : ys.log ? 0 : ys.decimals)));
+    });
+  }
+
+  function attachTip(plot) {
+    const tip = document.createElement("div");
+    tip.className = "tip";
+    plot.appendChild(tip);
+    return {
+      show(x, y, html) {
+        tip.innerHTML = html;
+        tip.style.left = x + "px"; tip.style.top = y + "px";
+        tip.classList.add("on");
+      },
+      hide() { tip.classList.remove("on"); },
+    };
+  }
+
+  /* ------------- 1. box plot by month ------------- */
+  function boxplot(plot, m) {
+    const w = plot.clientWidth || 700;
+    const h = Math.max(260, Math.min(340, w * 0.36));
+    const box = { x0: 48, x1: w - 10, y0: 14, y1: h - 26 };
+    const hue = css(`--m${m.slot}`);
+    const months = m.monthly.filter((b) => b.n > 0);
+
+    const all = [];
+    months.forEach((b) => {
+      all.push(b.lo_whisker, b.hi_whisker);
+      (b.outliers || []).forEach((v) => all.push(v));
+    });
+    const ys = m.logScale ? scaleLog(all) : scaleY(all, m.key !== "TxSoil0cm");
+
+    plot.querySelectorAll("svg").forEach((n) => n.remove());
+    const svg = el("svg", { viewBox: `0 0 ${w} ${h}`, width: w, height: h, role: "img" });
+    svg.appendChild(el("title", {}, `${m.en}: daily distribution by month`));
+
+    const slot = (box.x1 - box.x0) / 12;
+    const X = (i) => box.x0 + slot * (i + 0.5);
+    const Y = project(ys, box);
+    const bw = Math.min(34, slot * 0.56);
+
+    grid(svg, box, ys);
+
+    months.forEach((b) => {
+      const i = b.month - 1;
+      const x = X(i);
+
+      // whiskers
+      svg.appendChild(el("line", {
+        x1: x, x2: x, y1: Y(b.hi_whisker), y2: Y(b.q3),
+        stroke: css("--ink-3"), "stroke-width": 1.2,
+      }));
+      svg.appendChild(el("line", {
+        x1: x, x2: x, y1: Y(b.q1), y2: Y(b.lo_whisker),
+        stroke: css("--ink-3"), "stroke-width": 1.2,
+      }));
+      [b.hi_whisker, b.lo_whisker].forEach((v) => {
+        svg.appendChild(el("line", {
+          x1: x - bw / 4, x2: x + bw / 4, y1: Y(v), y2: Y(v),
+          stroke: css("--ink-3"), "stroke-width": 1.2,
+        }));
+      });
+
+      // outliers, nudged apart so identical values do not stack invisibly
+      (b.outliers || []).forEach((v, k) => {
+        const jitter = ((k % 5) - 2) * (bw / 9);
+        svg.appendChild(el("circle", {
+          cx: x + jitter, cy: Y(v), r: 2.1, fill: hue, opacity: 0.5,
+        }));
+      });
+
+      // box + median
+      const top = Y(b.q3), bottom = Y(b.q1);
+      svg.appendChild(el("rect", {
+        x: x - bw / 2, y: top, width: bw, height: Math.max(1, bottom - top),
+        rx: 2, fill: hue, "fill-opacity": 0.16, stroke: hue, "stroke-width": 1.4,
+      }));
+      svg.appendChild(el("line", {
+        x1: x - bw / 2, x2: x + bw / 2, y1: Y(b.median), y2: Y(b.median),
+        stroke: hue, "stroke-width": 2.4, "stroke-linecap": "round",
+      }));
+
+      svg.appendChild(el("text", {
+        x, y: box.y1 + 15, "text-anchor": "middle",
+        fill: css("--ink-3"), "font-size": 10, "font-family": css("--mono"),
+      }, b.label[0]));
+    });
+
+    const tip = attachTip(plot);
+    months.forEach((b) => {
+      const i = b.month - 1;
+      const hit = el("rect", { x: X(i) - slot / 2, y: box.y0, width: slot, height: box.y1 - box.y0, fill: "transparent" });
+      hit.addEventListener("pointerenter", () => {
+        const d = dec(m);
+        let html = `<b>${b.label}</b> n = ${b.n}<br>` +
+          `median ${fmt(b.median, d)} ${m.unit}<br>` +
+          `IQR ${fmt(b.q1, d)} – ${fmt(b.q3, d)}<br>` +
+          `whiskers ${fmt(b.lo_whisker, d)} – ${fmt(b.hi_whisker, d)}<br>` +
+          `outliers ${b.outlier_count}`;
+        if (b.dry_pct !== null && b.dry_pct !== undefined) html += `<br>dry days ${fmt(b.dry_pct, 1)}%`;
+        tip.show(X(i), Y(b.median), html);
+      });
+      hit.addEventListener("pointerleave", () => tip.hide());
+      svg.appendChild(hit);
+    });
+
+    plot.insertBefore(svg, plot.firstChild);
+  }
+
+  /* ------------- 2. frequency ------------- */
+  function histogram(plot, m) {
+    const w = plot.clientWidth || 420;
+    const h = Math.max(230, Math.min(290, w * 0.62));
+    const box = { x0: 44, x1: w - 10, y0: 16, y1: h - 34 };
+    const hue = css(`--m${m.slot}`);
+    const bins = m.frequency.bins;
+    const ys = scaleY(bins.map((b) => b.count), true);
+
+    plot.querySelectorAll("svg").forEach((n) => n.remove());
+    const svg = el("svg", { viewBox: `0 0 ${w} ${h}`, width: w, height: h, role: "img" });
+    svg.appendChild(el("title", {}, `${m.en}: frequency of daily values`));
+
+    const slot = (box.x1 - box.x0) / bins.length;
+    const X = (i) => box.x0 + slot * (i + 0.5);
+    const Y = project(ys, box);
+    const bw = Math.max(3, slot - 2);   // 2px surface gap between bars
+
+    grid(svg, box, ys);
+
+    let peak = bins[0];
+    bins.forEach((b) => { if (b.count > peak.count) peak = b; });
+
+    bins.forEach((b, i) => {
+      const y = Y(b.count);
+      svg.appendChild(el("rect", {
+        x: X(i) - bw / 2, y, width: bw, height: Math.max(1, box.y1 - y),
+        rx: Math.min(4, bw / 2), fill: hue,
+      }));
+    });
+
+    // Label the modal bin only.
+    const pi = bins.indexOf(peak);
+    const peakLabel = el("text", {
+      x: X(pi), y: Y(peak.count) - 7, "text-anchor": "middle",
+      fill: css("--ink"), "font-size": 10.5, "font-weight": 650, "font-family": css("--mono"),
+      stroke: css("--surface-ring"), "stroke-width": 3.5, "paint-order": "stroke fill",
+    }, `${peak.count.toLocaleString("en-US")} d`);
+    svg.appendChild(peakLabel);
+
+    // Skip labels only as far as the widest one actually demands, so narrow
+    // viewports stay legible without dropping labels the desktop can fit.
+    const widest = bins.reduce((a, b) => Math.max(a, b.label.length), 0) * 5.6;
+    const every = Math.max(1, Math.ceil((widest + 6) / slot));
+    bins.forEach((b, i) => {
+      if (i % every !== 0) return;
+      svg.appendChild(el("text", {
+        x: X(i), y: box.y1 + 14, "text-anchor": "middle",
+        fill: css("--ink-3"), "font-size": 9.5, "font-family": css("--mono"),
+      }, b.label));
+    });
+    svg.appendChild(el("text", {
+      x: (box.x0 + box.x1) / 2, y: h - 4, "text-anchor": "middle",
+      fill: css("--ink-3"), "font-size": 9.5, "font-family": css("--mono"),
+    }, m.frequency.mode === "classes" ? `daily rainfall class (${m.unit})` : `daily value (${m.unit})`));
+
+    const tip = attachTip(plot);
+    bins.forEach((b, i) => {
+      const hit = el("rect", { x: X(i) - slot / 2, y: box.y0, width: slot, height: box.y1 - box.y0, fill: "transparent" });
+      hit.addEventListener("pointerenter", () => {
+        const range = m.frequency.mode === "classes"
+          ? b.label
+          : `${fmt(b.lo, dec(m))} – ${fmt(b.hi, dec(m))} ${m.unit}`;
+        tip.show(X(i), Y(b.count), `<b>${range}</b><br>${b.count.toLocaleString("en-US")} days · ${fmt(b.pct, 1)}%`);
+      });
+      hit.addEventListener("pointerleave", () => tip.hide());
+      svg.appendChild(hit);
+    });
+
+    plot.insertBefore(svg, plot.firstChild);
+  }
+
+  /* ------------- 3. heat map by month ------------- */
+  function heatmap(host, m) {
+    const heat = m.heatmap;
+    const edges = heat.edges;
+    const classes = edges.length - 1;
+    const d = m.agg === "sum" ? 0 : 1;
+    // Cell labels need enough precision to differ from each other: wind spans
+    // 0.9-1.6, so rounding to whole numbers would print "1" in every cell.
+    const cellDp = heat.max >= 100 ? 0 : heat.max >= 10 ? 1 : 2;
+
+    // One hue, light to dark: each step mixes the measure's hue into the surface.
+    const stepColor = (k) =>
+      `color-mix(in oklab, var(--hue) ${Math.round(14 + (86 * (k + 1)) / classes)}%, var(--panel))`;
+    const classOf = (v) => {
+      for (let k = classes - 1; k >= 0; k--) if (v >= edges[k]) return k;
+      return 0;
+    };
+
+    const header = `<div class="heat-row"><span class="heat-lab"></span>` +
+      P.monthLabels.map((l) => `<span class="heat-head">${l[0]}</span>`).join("") + `</div>`;
+
+    const body = heat.rows.map((row) => {
+      const cells = row.cells.map((c) => {
+        if (c.value === null) {
+          return `<span class="heat-cell empty" title="${row.year}-${String(c.month).padStart(2, "0")} — no data (${Math.round(c.coverage * 100)}% of days)"></span>`;
+        }
+        const k = classOf(c.value);
+        const ink = k >= classes - 2 ? "var(--panel)" : "var(--ink-2)";
+        return `<span class="heat-cell" style="background:${stepColor(k)};color:${ink}"
+          title="${row.year}-${String(c.month).padStart(2, "0")} — ${fmt(c.value, d)} ${m.unit} ${heat.agg}">${fmt(c.value, cellDp)}</span>`;
+      }).join("");
+      return `<div class="heat-row"><span class="heat-lab">${row.year}</span>${cells}</div>`;
+    }).join("");
+
+    const swatches = Array.from({ length: classes }, (_, k) =>
+      `<span class="scale-step" style="background:${stepColor(k)}"></span>`).join("");
+
+    host.innerHTML = `<div class="heat">${header}${body}</div>
+      <div class="scale">
+        <span class="scale-lab">${fmt(heat.min, d)}</span>
+        <span class="scale-bar">${swatches}</span>
+        <span class="scale-lab">${fmt(heat.max, d)} ${m.unit}</span>
+        <span class="scale-lab">· monthly ${heat.agg} · outlined cell = month below 90% coverage</span>
+      </div>`;
+  }
+
+  /* ------------- masthead ------------- */
+  const st = P.station;
+  document.getElementById("eyebrow").textContent =
+    `Station ${st.id} · ${st.name_zh} · ${P.window.start}–${P.window.end}`;
+  document.getElementById("standfirst").textContent =
+    `${P.totalObservations.toLocaleString("en-US")} daily observations across ` +
+    `${P.days.toLocaleString("en-US")} days, shown three ways: the spread within each ` +
+    `month, how often each value occurs, and every month of every year at once. ` +
+    `Monthly means hide all of this.`;
+
+  document.getElementById("readout").innerHTML = [
+    ["Window", `${P.window.start}–${P.window.end}`],
+    ["Days pooled", P.days.toLocaleString("en-US")],
+    ["Observations", P.totalObservations.toLocaleString("en-US")],
+    ["Measures", P.measures.length],
+    ["Heat map to", P.heatmapEnd],
+    ["Elevation", `${st.elevation_m} m`],
+  ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+
+  document.getElementById("caveat").innerHTML =
+    `<strong>Why 2018 is the right floor.</strong> The soil probe and sunshine recorder ` +
+    `both start that year, and every artificial break the record contains — 2002 in ` +
+    `daily maximum and diurnal range, 2007 in wind, 2016 in rainfall intensity — falls ` +
+    `before it. Pooling ${P.window.start}–${P.window.end} therefore needs no homogeneity ` +
+    `adjustment. Box plots and histograms use complete years only, so each month carries ` +
+    `the same number of seasons; the heat map keeps ${P.heatmapEnd} and marks its ` +
+    `unfinished months.`;
+
+  document.getElementById("foot").innerHTML =
+    `Generated ${P.generated} from CWA CODiS station ${st.id} (${st.name_zh}). ` +
+    `Boxes are Tukey: box spans the interquartile range, whiskers reach the furthest ` +
+    `value within 1.5 IQR, dots are everything beyond. Up to 40 outliers are drawn per ` +
+    `month; the tooltip reports the true count.`;
+
+  /* ------------- panels ------------- */
+  const container = document.getElementById("panels");
+  container.style.display = "flex";
+  container.style.flexDirection = "column";
+  container.style.gap = "clamp(1.25rem, 1rem + 1vw, 2rem)";
+
+  P.measures.forEach((m) => {
+    const panel = document.createElement("section");
+    panel.className = "panel";
+    panel.style.setProperty("--hue", HUE[m.slot]);
+    const o = m.overall, d = dec(m);
+
+    const statCells = [
+      ["n", o.n.toLocaleString("en-US")],
+      ["min", fmt(o.min, d)],
+      ["p5", fmt(o.p05, d)],
+      ["q1", fmt(o.q1, d)],
+      ["median", fmt(o.median, d)],
+      ["q3", fmt(o.q3, d)],
+      ["p95", fmt(o.p95, d)],
+      ["max", fmt(o.max, d)],
+      ["mean", fmt(o.mean, d)],
+      ["sd", fmt(o.sd, d)],
+    ].map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("");
+
+    const boxRows = m.monthly.map((b) => `<tr>
+      <td>${b.label}</td><td>${b.n}</td><td>${fmt(b.min, d)}</td><td>${fmt(b.q1, d)}</td>
+      <td>${fmt(b.median, d)}</td><td>${fmt(b.q3, d)}</td><td>${fmt(b.max, d)}</td>
+      <td>${fmt(b.mean, d)}</td><td>${fmt(b.sd, d)}</td><td>${b.outlier_count}</td>
+      ${m.key === "Precp" ? `<td>${fmt(b.dry_pct, 1)}%</td>` : ""}</tr>`).join("");
+
+    const freqRows = m.frequency.bins.map((b) => `<tr>
+      <td>${m.frequency.mode === "classes" ? b.label : `${fmt(b.lo, d)}–${fmt(b.hi, d)}`}</td>
+      <td>${b.count.toLocaleString("en-US")}</td><td>${fmt(b.pct, 2)}%</td></tr>`).join("");
+
+    panel.innerHTML = `
+      <div class="panel-head">
+        <div class="panel-id">
+          <span class="zh">${m.zh}</span>
+          <span class="en">${m.en}</span>
+          <span class="key"><i class="swatch"></i>${m.key} · ${m.unit}</span>
+        </div>
+        <div class="hero">
+          <div class="value">${fmt(o.median, d)}<span class="unit">${m.unit}</span></div>
+          <div class="caption">median daily value · n = ${o.n.toLocaleString("en-US")}</div>
+        </div>
+      </div>
+
+      <dl class="stats">${statCells}</dl>
+
+      <div class="view">
+        <h3 class="view-title">Box plot by month</h3>
+        <p class="view-sub">daily values pooled across ${P.window.end - P.window.start + 1} years ·
+          ${m.boxBasis} · box = IQR, whiskers = 1.5 IQR, dots = outliers${m.logScale ? " · log scale" : ""}</p>
+        <div class="plot" data-chart="box"></div>
+      </div>
+
+      <div class="split">
+        <div class="view">
+          <h3 class="view-title">Frequency</h3>
+          <p class="view-sub">${m.frequency.note}</p>
+          <div class="plot" data-chart="hist"></div>
+        </div>
+        <div class="view">
+          <h3 class="view-title">Heat map by month</h3>
+          <p class="view-sub">monthly ${m.heatmap.agg}, ${P.window.start}–${P.heatmapEnd}</p>
+          <div data-chart="heat"></div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <details>
+          <summary>Table view — monthly statistics and frequency</summary>
+          <div class="scroller">
+            <table>
+              <thead><tr><th>Month</th><th>n</th><th>Min</th><th>Q1</th><th>Median</th><th>Q3</th>
+              <th>Max</th><th>Mean</th><th>SD</th><th>Outliers</th>${m.key === "Precp" ? "<th>Dry days</th>" : ""}</tr></thead>
+              <tbody>${boxRows}</tbody>
+            </table>
+          </div>
+          <div class="scroller" style="margin-top:0.75rem">
+            <table>
+              <thead><tr><th>${m.frequency.mode === "classes" ? "Class" : "Bin"} (${m.unit})</th><th>Days</th><th>Share</th></tr></thead>
+              <tbody>${freqRows}</tbody>
+            </table>
+          </div>
+        </details>
+      </div>`;
+
+    container.appendChild(panel);
+
+    const boxHost = panel.querySelector('[data-chart="box"]');
+    const histHost = panel.querySelector('[data-chart="hist"]');
+    const heatHost = panel.querySelector('[data-chart="heat"]');
+
+    const draw = () => { boxplot(boxHost, m); histogram(histHost, m); heatmap(heatHost, m); };
+    draw();
+
+    if (window.ResizeObserver) {
+      let last = boxHost.clientWidth;
+      new ResizeObserver(() => {
+        if (Math.abs(boxHost.clientWidth - last) > 8) { last = boxHost.clientWidth; draw(); }
+      }).observe(boxHost);
+    }
+    panel._redraw = draw;
+  });
+
+  const repaint = () => document.querySelectorAll(".panel").forEach((p) => p._redraw && p._redraw());
+  if (window.matchMedia) {
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", repaint);
+  }
+  new MutationObserver(repaint).observe(document.documentElement, {
+    attributes: true, attributeFilter: ["data-theme"],
+  });
+})();
+</script>

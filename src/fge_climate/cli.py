@@ -13,6 +13,7 @@ from .build import build_daily, merge_codis_tail, write_outputs
 from .config import PROCESSED_DIR, REPO_ROOT, REPORTS_DIR, load_config
 from .indices import annual_indices, monthly_summary, seasonal_means
 from .sources import codis, mirror
+from .distributions import write_distributions
 from .webpage import build_payload, write_page
 
 
@@ -116,9 +117,11 @@ def cmd_web(args: argparse.Namespace) -> int:
     daily = pd.read_csv(PROCESSED_DIR / f"{station.id}_daily.csv", parse_dates=["date"])
     payload = build_payload(config, station, daily)
     path = write_page(payload, REPO_ROOT / "web" / "index.html")
-
     window = payload["window"]
     print(f"Wrote {path} ({window['start']}-{window['end']} common window)")
+
+    dist = write_distributions(config, station, daily, REPO_ROOT / "web" / "distributions.html")
+    print(f"Wrote {dist}")
     return 0
 
 

@@ -75,7 +75,7 @@ jobs:
         env:
           PYTHONPATH: src
 
-      - name: Regenerate the four-measure page
+      - name: Regenerate the web pages
         run: python -m fge_climate.cli web
         env:
           PYTHONPATH: src
