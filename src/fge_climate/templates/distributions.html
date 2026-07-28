@@ -290,7 +290,28 @@
 
   @media print {
     @page { margin: 12mm; }
-    body { background: #fff; font-size: 9.2pt; }
+
+    /* Force the white palette onto every theme. Without this, printing a page
+       the reader had in dark mode yields near-white text on white paper.
+       Listed selectors match the theme rules above and win on source order. */
+    :root,
+    :root[data-theme="dark"],
+    :root[data-theme="light"],
+    :root[data-variant="print"] {
+      color-scheme: light;
+      --ground: #ffffff;
+      --panel: #ffffff;
+      --panel-2: #f6f7f7;
+      --ink: #12181a;
+      --ink-2: #444e51;
+      --ink-3: #6d7679;
+      --rule: #dcdfdf;
+      --rule-strong: #b0b6b6;
+      --surface-ring: #ffffff;
+      --m1: #d2551f; --m2: #1f66c0; --m3: #a8720a; --m4: #157f59;
+    }
+
+    body { background: #fff; color: var(--ink); font-size: 9.2pt; }
     .wrap { max-width: none; padding: 0; gap: 0; }
     .panel {
       border-color: #c9cdcd;
@@ -805,5 +826,11 @@
   new MutationObserver(repaint).observe(document.documentElement, {
     attributes: true, attributeFilter: ["data-theme"],
   });
+  // Print swaps the palette through @media print, and the charts read those
+  // tokens at draw time, so they have to be redrawn before the page is paged.
+  if (window.matchMedia) {
+    window.matchMedia("print").addEventListener("change", repaint);
+  }
+  window.addEventListener("beforeprint", repaint);
 })();
 </script>
