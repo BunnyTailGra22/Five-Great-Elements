@@ -22,8 +22,8 @@
   "non_numeric": {},
   "valid_counts": {
     "Tx": 12232,
-    "TxMaxAbs": 12231,
-    "TxMinAbs": 12230,
+    "TxMaxAbs": 12232,
+    "TxMinAbs": 12231,
     "RH": 12191,
     "WS": 12343,
     "Precp": 12321,
