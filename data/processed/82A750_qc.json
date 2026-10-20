@@ -1,5 +1,5 @@
 {
-  "total_rows": 13441,
+  "total_rows": 13442,
   "sentinel_masked": {
     "Tx": 724,
     "TxMaxAbs": 724,
@@ -21,17 +21,17 @@
   },
   "non_numeric": {},
   "valid_counts": {
-    "Tx": 12273,
-    "TxMaxAbs": 12272,
-    "TxMinAbs": 12271,
-    "RH": 12232,
-    "WS": 12384,
-    "Precp": 12362,
-    "SunShine": 4695,
-    "GloblRad": 11934,
-    "TxSoil0cm": 3138,
-    "TxSoil5cm": 3138,
-    "TxSoil10cm": 3138,
-    "TxSoil20cm": 3138
+    "Tx": 12274,
+    "TxMaxAbs": 12273,
+    "TxMinAbs": 12272,
+    "RH": 12233,
+    "WS": 12385,
+    "Precp": 12363,
+    "SunShine": 4696,
+    "GloblRad": 11935,
+    "TxSoil0cm": 3139,
+    "TxSoil5cm": 3139,
+    "TxSoil10cm": 3139,
+    "TxSoil20cm": 3139
   }
 }
